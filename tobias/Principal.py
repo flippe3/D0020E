@@ -1,5 +1,7 @@
-import socket
 import Constants
+import NetworkHandler
+
+
 class Principal:
 
     def test_template_poa(self):
@@ -9,11 +11,8 @@ class Principal:
         self.transmit_to_agent(s)
 
     def transmit_to_agent(self, poa):
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((Constants.ip, Constants.agent_port))
-        client_socket.send(poa)
-        client_socket.close()
+        nh = NetworkHandler.NetworkHandler()
+        nh.send_msg("PoA", poa, Constants.agent_port)
 
 
 Principal().test_template_poa()
-

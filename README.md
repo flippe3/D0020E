@@ -14,7 +14,7 @@ git clone https://github.com/flippe3/D0020E.git
 ```sh
 cd D0020E
   ```
-2. Install the required packages. 
+3. Install the required packages. 
 ```sh
 python -m pip install -r requirements.txt
   ```

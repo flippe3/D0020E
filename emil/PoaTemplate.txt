@@ -6,7 +6,7 @@
 			"Agent_MAC_Address": "00:0a:95:9d:68:16", 
 			"Agent_Name": "Truck device", 
 			"Agent_Public_key": "truckdevice123", 
-			"Message": "sadwd", 
+			"Message": "This PoA authorizes Agent (Truck device) to make decisions on behalf of the Principal and valid for a short period", 
 			"Mining_Station_ID": "121",
 			"Principal_Name": "Entrepreneur",
 			"Principal_Public_Key": "entrepreneur123",

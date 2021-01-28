@@ -14,7 +14,7 @@ class Verifier:
                         receiver_public_key = poa["receiver_public_key"]
                         #return Verifier.verify_payload( decrypt_payload( poa["payload"]))
                 
-                        return Verifier.verify_payload( sender_public_key, receiver_public_key, jwt.decode( poa["payload"], PoaConstants.principal_public_key, algorithms=["RS256"])) 
+                        return Verifier.verify_payload( sender_public_key, receiver_public_key, jwt.decode( poa["payload"], Constants.principal_public_key, algorithms=["RS256"])) 
                 except:
                         return False
         
@@ -41,7 +41,7 @@ class Verifier:
                         
                                                         #now = datetime.datetime.now()
 
-                        # ~Could possibly be automatically checked when payload gets decoded~
+
                         if(Agent_Public_key != sender_public_key):
                                 return False
                         if(Principal_Public_Key != receiver_public_key):
@@ -82,21 +82,13 @@ class Verifier:
 
 
 
-#                                       ══╦═════════╦══
-#                                         ║~TESTING~║
-#                                       ══╬═════════╬══
-#                                         ║         ║              
-#                                         ║         ║
-#                                         ║         ║
-#                                         ║         ║
-#                                         ║         ║
 
-                         
+#                                         ~TESTING~
 
 expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=180)
 # I didn't seem to love being double encrypted, but it's probably doable. 
-payload = jwt.encode( { "exp": expires, "Agent_MAC_Address": "00:0a:95:9d:68:16", "Agent_Name": "Truck device", "Agent_Public_key": PoaConstants.agent_public_key, "Message": "sadwd", "Mining_Station_ID": "121", "Principal_Name": "Entrepreneur", "Principal_Public_Key": PoaConstants.principal_public_key, "Valid_from": "2020-07-15 09:48:31", "Valid_to": "2021-07-31 18:00:00", "id": "3"}, PoaConstants.principal_private_key, algorithm="RS256")
-poa = {"sender_public_key": PoaConstants.agent_public_key, "receiver_public_key": PoaConstants.principal_public_key, "payload": payload}
+payload = jwt.encode( { "exp": expires, "Agent_MAC_Address": "00:0a:95:9d:68:16", "Agent_Name": "Truck device", "Agent_Public_key": Constants.agent_public_key, "Message": "sadwd", "Mining_Station_ID": "121", "Principal_Name": "Entrepreneur", "Principal_Public_Key": Constants.principal_public_key, "Valid_from": "2020-07-15 09:48:31", "Valid_to": "2021-07-31 18:00:00", "id": "3"}, Constants.principal_private_key, algorithm="RS256")
+poa = {"sender_public_key": Constants.agent_public_key, "receiver_public_key": Constants.principal_public_key, "payload": payload}
 
 
 print(Verifier.verify_poa(poa))

@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from http.client import HTTPConnection, HTTPResponse
-import time
+from http.client import HTTPConnection
+from urllib.parse import parse_qs, urlparse
+import requests
 
 
 class NetworkHandler:
@@ -9,46 +10,60 @@ class NetworkHandler:
         server = HTTPServer(("localhost", port), method)
         server.serve_forever(1)
 
-    def request_msg(self, keyword, port, ip='localhost'):
-        conn = HTTPConnection(ip + ':' + str(port))
-        conn.request("GET", keyword)
-        res = conn.getresponse().read()
-        return res
-
+    #DONT USE
     def send_msg(self, keyword, msg, port, ip='localhost'):
         conn = HTTPConnection(ip + ':' + str(port))
         conn.request("POST", keyword, msg)
         res = conn.getresponse().read()
         print(res)
         return res
+    #DONT USE
+    def request_msg(self, payload, port, ip='localhost'):
+        conn = HTTPConnection(ip + ':' + str(port))
+        conn.request("GET", str(str(payload).encode("utf-8")))
+        res = conn.getresponse().read()
+        return res
+
+    def requests_get(self, port, keyword, payload,data=""):
+        r = requests.get("http://localhost:" + str(port) + "/" + str(keyword), params=payload, data=data)
+        print(r.status_code)
+        return r.text
+
+    def requests_post(self, port, keyword, payload):
+        r = requests.post("http://localhost:" + str(port) + "/" + str(keyword), data=payload)
+        print(r.status_code)
+        return r.text
+
 
 class Server(BaseHTTPRequestHandler):
     def do_GET(self):
         print("GET")
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        print(self.path)
+        self.response()
+        o = urlparse(self.path)
+        query = parse_qs(o.query)
+        print(query)
+        self.wfile.write(bytes(str(query), "utf-8"))
 
-        #content_length = int(self.headers['Content-Length'])  # <--- Gets the size of data
-        #post_data = self.rfile.read(content_length)  # <--- Gets the data itself
-        #print(post_data.decode("utf-8"))
-        #self.wfile.write(bytes("<html><head><title>https://pythonbasics.org</title></head>", "utf-8"))
-        #self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
-        #self.wfile.write(bytes("<body>", "utf-8"))
-        #self.wfile.write(bytes("<form method=\"post\" action=\"/action_page.php\">\n<label for=\"fname\">First name:</label><br>\n<input type=\"text\" id=\"fname\" value=\"John\"><br><br><input type=\"submit\" value=\"Submit\"></form> ", "utf-8"))
-        #self.wfile.write(bytes("<p>This is an example web server.</p>", "utf-8"))
-        #self.wfile.write(bytes("</body></html>", "utf-8"))
 
     def do_POST(self):
         print("POST")
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-    # self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
+        self.response()
+        content_length = int(self.headers.get('content-length', 0))  # <--- Gets the size of data
+        #post_data = self.rfile.read(content_length)  # <--- Gets the data itself
+        #data = post_data.decode('utf-8')
+        #print(data)
+        #self.parse_responce(data)
 
-    # content_length = int(self.headers['Content-Length'])  # <--- Gets the size of data
-    # post_data = self.rfile.read(content_length)  # <--- Gets the data itself
-    # print("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
-    #              str(self.path), str(self.headers), post_data.decode('utf-8'))
-    # print("POST request",post_data.decode('utf-8'))
+    def response(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+
+    def parse_responce(self,data):
+        parse = parse_qs(data)
+        print(parse)
+        return parse
+        #self.wfile.write(bytes(str(parse), "utf-8"))
+        # self.wfile.write(bytes("<html><head><title>Test</title></head>", "utf-8"))
+        # self.wfile.write(bytes("<body>", "utf-8"))
+        # self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))

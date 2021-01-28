@@ -21,7 +21,7 @@ class PrincipalServer(nh.Server):
 
 class Principal:
     def test_template_poa(self):
-        f = open("PoaTemplate.txt", "r")
+        f = open("../tests/PoaTemplate.txt", "r")
         s = f.read().encode('utf-8')
         print(s)
         return s

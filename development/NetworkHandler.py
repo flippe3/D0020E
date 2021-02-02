@@ -37,12 +37,12 @@ class NetworkHandler:
 
 class Server(BaseHTTPRequestHandler):
     def do_GET(self):
-        print("GET")
-        o = urlparse(self.path)
-        query = parse_qs(o.query)
+        print("GET: " + self.path)
+        #o = urlparse(self.path)
+        #query = parse_qs(o.query)
 
 
-        print(query)
+        #print(query)
         #self.wfile.write(bytes(str(query), "utf-8"))
 
 

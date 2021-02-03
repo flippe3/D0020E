@@ -1,10 +1,13 @@
+            #server stuff
+#------------------------------------#
 ip = "localhost"
 agent_port = 4573
 principal_port = 4573
 vendor_port = 4574
 
-import jwt
 
+            #poa stuff
+#------------------------------------#
 principal_private_key = """-----BEGIN RSA PRIVATE KEY-----
 MIIEoQIBAAKCAQBmotk9JSb/X/xZWYtYv1Tizsntwg0bEsJOVXdvWCA/6vmsmoCV
 S6VQde1RXdV4i/EASssk4qTzSPCZvUZ2+CXS3veti18WXjpFwo/GjrQ81m/c3ole
@@ -81,39 +84,38 @@ LYat5TVDKjomcroxd+gKX9yT31eJc+FhjxHcByFQ8AjnlVA2tE35pyfO2YPv0V0p
 KwIDAQAB
 -----END PUBLIC KEY-----"""
 
-request_poa_body = {
-    "response_type": "token",
-    "client_id": "agent123",
-    "public_key": agent_public_key
-}
+agent_mac_address = "00:0a:95:9d:68:16"
+agent_name = "Truck Device"
+message = "This PoA authorizes Agent (Truck device) to make decisions on behalf of the Principal and valid for a short period"
+principal_name = "Entrepreneur"
+valid_period = ["2021-01-01 12:00:00", "2021-12-30 12:00:00"]
+invalid_period = ["2020-01-01 12:00:00", "2020-12-30 12:00:00"]
+id = 3
 
 valid_poa = {
-    "Agent_MAC_Address": "00:0a:95:9d:68:16",
-    "Agent_Name": "Truck device",
+    "Agent_MAC_Address": agent_mac_address,
+    "Agent_Name": agent_name,
     "Agent_Public_Key": agent_public_key,
-    "Message": "This PoA authorizes Agent (Truck device) to make decisions on behalf of the Principal and valid for a short period",
+    "Message": message,
     "Mining_Station_ID": "121",
-    "Principal_Name": "Entrepreneur",
+    "Principal_Name": principal_name,
     "Prinicpal_Public_Key": principal_public_key,
-    "Valid_from": "2021-01-01 12:00:00",
-    "Valid_to": "2021-12-30 12:00:00",
-    "id": "3"
+    "Valid_from": valid_period[0],
+    "Valid_to": valid_period[1],
+    "id": id
 }
 
 invalid_poa = {
-    "Agent_MAC_Address": "00:0a:95:9d:68:16",
-    "Agent_Name": "Truck device",
+    "Agent_MAC_Address": agent_mac_address,
+    "Agent_Name": agent_name,
     "Agent_Public_Key": agent_public_key,
-    "Message": "This PoA authorizes Agent (Truck device) to make decisions on behalf of the Principal and valid for a short period",
+    "Message": message,
     "Mining_Station_ID": "121",
-    "Principal_Name": "Entrepreneur",
+    "Principal_Name": principal_name,
     "Prinicpal_Public_Key": principal_public_key,
-    "Valid_from": "2020-01-01 12:00:00",
-    "Valid_to": "2020-12-30 12:00:00",
-    "id": "3"
+    "Valid_from": invalid_period[0],
+    "Valid_to": invalid_period[1],
+    "id": id
 }
-
 valid_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBZ2VudF9NQUNfQWRkcmVzcyI6IjAwOjBhOjk1OjlkOjY4OjE2IiwiQWdlbnRfTmFtZSI6IlRydWNrIGRldmljZSIsIkFnZW50X1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFubTRFb2IwV3pUUWF4bjJkTGJralxuVlFSUXB5cEp0ZGY3WEk0bHR1d2IzZmZQUVhxN2swcy9VTHBYR1ZwdzVtYkYzQXVHSUU1Kzc3SGlDQjVvN1FRSFxua1Y5YW5EanVFS09PR2Z4SlRJSS96em9jZVJlV09IV24rSnRURGxMdWN3dGZrNjFDeUpvRGFSNjd6VS9UVEJGV1xuTnNweW94L1JOTUNnT2NUSUFzZkxZaityTXNxNnpueVBpQjVLV29aSUM5aEEwMEVQVERnckRDRGJ1Yk1wZFZVbVxuNytERE1WcGZoeXVlUjk0VzN3eDB0RjFNTmFxc1R1V2tXWGNiZXYyZ3diNUU4VEJ5bUIwbENnTkIzUDZLUzhSUlxuTFlhdDVUVkRLam9tY3JveGQrZ0tYOXlUMzFlSmMrRmhqeEhjQnlGUThBam5sVkEydEUzNXB5Zk8yWVB2MFYwcFxuS3dJREFRQUJcbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIk1lc3NhZ2UiOiJUaGlzIFBvQSBhdXRob3JpemVzIEFnZW50IChUcnVjayBkZXZpY2UpIHRvIG1ha2UgZGVjaXNpb25zIG9uIGJlaGFsZiBvZiB0aGUgUHJpbmNpcGFsIGFuZCB2YWxpZCBmb3IgYSBzaG9ydCBwZXJpb2QiLCJNaW5pbmdfU3RhdGlvbl9JRCI6IjEyMSIsIlByaW5jaXBhbF9OYW1lIjoiRW50cmVwcmVuZXVyIiwiUHJpbmljcGFsX1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklUQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FRNEFNSUlCQ1FLQ0FRQm1vdGs5SlNiL1gveFpXWXRZdjFUaVxuenNudHdnMGJFc0pPVlhkdldDQS82dm1zbW9DVlM2VlFkZTFSWGRWNGkvRUFTc3NrNHFUelNQQ1p2VVoyK0NYU1xuM3ZldGkxOFdYanBGd28vR2pyUTgxbS9jM29sZThHaFExVWM3VWZnOTl1R3FiYUV1OVkvTUVRMVRlV0Myamp5N1xuVjNWR1NtZzlDdUdlRUNrNUNFT3IyM3FkQXZ3VUd3Y0pzeWZUaWRnd2pmUTVxU0NyYll3TlVTcy9SL1hOR3l5WFxueHU3bGw0QUs0N2lGWEcwdzExcEZnQVZuR0V3QXpybWVpK0pua05GaXNqbnJLYzliSTdNSWZRUVBUYVY4ZDBEbVxudWFRTVdaSzdhYWpWOVZNeDVhNUt3VGgrVkQzcEEvVVMzRkFkRlhoL2xjeFBmWHNyTXhmVmdPSGhwTWNkRThsL1xuQWdNQkFBRT1cbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIlZhbGlkX2Zyb20iOiIyMDIxLTAxLTAxIDEyOjAwOjAwIiwiVmFsaWRfdG8iOiIyMDIxLTEyLTMwIDEyOjAwOjAwIiwiaWQiOiIzIn0.QJaYenhoP3cLKNLy2FSsI9-FTjkzhPtnEOs9DxH2EznOH-tppZn9kBEkOOgtvw-IcWyoXZrr5gyDybTdneLzj2s6m7vVuiBv7eiFE-S1W1L2ObvQixFbkfNrH4cHXxxvf10zY7n5ZDUZyrbJiZPhoSGzXNuBJ_9DFe3o4wSDkEfJxPrUm5SJwamTv1SbzIE_KGkTwtdiTMK4-xnMkI0FmBGzTadzGF8pxJGFPK_oKKzrQDdNn9ZXIltgOP-W52rdPB0RjA8vuMjDj2_rTw8OTX-HQjPsYnmEOqLQjh7av0O56AoVatGrfWYarcLEZLbr5B2XsogfvSh6UeXvnlTGEw"
 invalid_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBZ2VudF9NQUNfQWRkcmVzcyI6IjAwOjBhOjk1OjlkOjY4OjE2IiwiQWdlbnRfTmFtZSI6IlRydWNrIGRldmljZSIsIkFnZW50X1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFubTRFb2IwV3pUUWF4bjJkTGJralxuVlFSUXB5cEp0ZGY3WEk0bHR1d2IzZmZQUVhxN2swcy9VTHBYR1ZwdzVtYkYzQXVHSUU1Kzc3SGlDQjVvN1FRSFxua1Y5YW5EanVFS09PR2Z4SlRJSS96em9jZVJlV09IV24rSnRURGxMdWN3dGZrNjFDeUpvRGFSNjd6VS9UVEJGV1xuTnNweW94L1JOTUNnT2NUSUFzZkxZaityTXNxNnpueVBpQjVLV29aSUM5aEEwMEVQVERnckRDRGJ1Yk1wZFZVbVxuNytERE1WcGZoeXVlUjk0VzN3eDB0RjFNTmFxc1R1V2tXWGNiZXYyZ3diNUU4VEJ5bUIwbENnTkIzUDZLUzhSUlxuTFlhdDVUVkRLam9tY3JveGQrZ0tYOXlUMzFlSmMrRmhqeEhjQnlGUThBam5sVkEydEUzNXB5Zk8yWVB2MFYwcFxuS3dJREFRQUJcbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIk1lc3NhZ2UiOiJUaGlzIFBvQSBhdXRob3JpemVzIEFnZW50IChUcnVjayBkZXZpY2UpIHRvIG1ha2UgZGVjaXNpb25zIG9uIGJlaGFsZiBvZiB0aGUgUHJpbmNpcGFsIGFuZCB2YWxpZCBmb3IgYSBzaG9ydCBwZXJpb2QiLCJNaW5pbmdfU3RhdGlvbl9JRCI6IjEyMSIsIlByaW5jaXBhbF9OYW1lIjoiRW50cmVwcmVuZXVyIiwiUHJpbmljcGFsX1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklUQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FRNEFNSUlCQ1FLQ0FRQm1vdGs5SlNiL1gveFpXWXRZdjFUaVxuenNudHdnMGJFc0pPVlhkdldDQS82dm1zbW9DVlM2VlFkZTFSWGRWNGkvRUFTc3NrNHFUelNQQ1p2VVoyK0NYU1xuM3ZldGkxOFdYanBGd28vR2pyUTgxbS9jM29sZThHaFExVWM3VWZnOTl1R3FiYUV1OVkvTUVRMVRlV0Myamp5N1xuVjNWR1NtZzlDdUdlRUNrNUNFT3IyM3FkQXZ3VUd3Y0pzeWZUaWRnd2pmUTVxU0NyYll3TlVTcy9SL1hOR3l5WFxueHU3bGw0QUs0N2lGWEcwdzExcEZnQVZuR0V3QXpybWVpK0pua05GaXNqbnJLYzliSTdNSWZRUVBUYVY4ZDBEbVxudWFRTVdaSzdhYWpWOVZNeDVhNUt3VGgrVkQzcEEvVVMzRkFkRlhoL2xjeFBmWHNyTXhmVmdPSGhwTWNkRThsL1xuQWdNQkFBRT1cbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIlZhbGlkX2Zyb20iOiIyMDIwLTAxLTAxIDEyOjAwOjAwIiwiVmFsaWRfdG8iOiIyMDIwLTEyLTMwIDEyOjAwOjAwIiwiaWQiOiIzIn0.GUnVFL-N4ssh3DUA4vdlrk135Jp14EZQBlfLjJBewm53bvUc0sfv4h6jQuPjYPGV9gxEPPRj-07JPgWCqTS6J8PDRdvetPs0Lc5_NOb65W5uNSvyIuEtMfNGr86UsoYSG8-aX_hAX4Qs3JvEk521qeTl6Gch6ma2KH4fU22MbOqukEvN1FEsgNeWGvC8hJPKaUBoO7TUpVXBNMKIjab5pcufGKvlZd5A6arHptadwcFWNUzEUKiAn1JtgYlseorPfej6HWPbAH9uWYlrWtMK3cFhpiwnqmg4p5DFkF8wozzCnUoFeO5as3hZ6g65AdhrxAuQJB2VJ6KgOrARs9o_Tw"
-request_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJyZXNwb25zZV90eXBlIjoidG9rZW4iLCJjbGllbnRfaWQiOiJhZ2VudDEyMyIsInB1YmxpY19rZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFubTRFb2IwV3pUUWF4bjJkTGJralxuVlFSUXB5cEp0ZGY3WEk0bHR1d2IzZmZQUVhxN2swcy9VTHBYR1ZwdzVtYkYzQXVHSUU1Kzc3SGlDQjVvN1FRSFxua1Y5YW5EanVFS09PR2Z4SlRJSS96em9jZVJlV09IV24rSnRURGxMdWN3dGZrNjFDeUpvRGFSNjd6VS9UVEJGV1xuTnNweW94L1JOTUNnT2NUSUFzZkxZaityTXNxNnpueVBpQjVLV29aSUM5aEEwMEVQVERnckRDRGJ1Yk1wZFZVbVxuNytERE1WcGZoeXVlUjk0VzN3eDB0RjFNTmFxc1R1V2tXWGNiZXYyZ3diNUU4VEJ5bUIwbENnTkIzUDZLUzhSUlxuTFlhdDVUVkRLam9tY3JveGQrZ0tYOXlUMzFlSmMrRmhqeEhjQnlGUThBam5sVkEydEUzNXB5Zk8yWVB2MFYwcFxuS3dJREFRQUJcbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSJ9.SG-UzZHh_JrBuzhpfz10u_JJ6RlUPTvW_KSxWB28TaXk8RI5KwpxCO05EP4VKFYJ5SMIWuAU2uqEV5R3Uxj9yARvnP4CcPLKpSjQohLGmFWjlcbAdt43Mc6W3dILEKOMkXRNmusfiyp5gLQ4BQWHoCGuxRHfARwXaKHEvmvZOkB5fxdrDi4jWZ5LJdfDo4XiCQZbI3l2ekzCSf6Xa1NRmKDTeJKx2K_Do8G8jmF6ut4Oe1Y7ScxBH0lz1C1xFwDf7fvdSOujj2Nj-12an1p8YpeRFICacXQJuUJDiRo_54a6rr91JNrqQYDZAPgilGjwWFZ586Y64h1G4-si0ZVz8g"
-

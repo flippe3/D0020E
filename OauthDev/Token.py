@@ -1,5 +1,6 @@
 import development.Constants as const
-import json, jwt
+import jwt
+from datetime import datetime
 
 class Token:
 
@@ -8,6 +9,12 @@ class Token:
 
     def decodeJwt(self, token, public_key):
         return jwt.decode(token, public_key, algorithms=["RS256"])
+
+    def validatePoaPeriod(self, poa):
+        valid_from = poa.get("Valid_from")
+        valid_to = poa.get("Valid_to")
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return valid_from < now < valid_to
 
     class Poa:
         def __init__(self, agent_mac, agent_name, agent_public_key,
@@ -63,7 +70,8 @@ t2 = Token()
 decoded_JWT = t2.decodeJwt(JWT, const.principal_public_key)
 print(decoded_JWT)
 
-#generate invalid from consts
-invalid = t.generateJwt(const.invalid_poa, const.principal_private_key)
-decoded = t.decodeJwt(invalid, const.principal_public_key)
-print(decoded.get("Agent_MAC_Address"))
+valid = t2.validatePoaPeriod(decoded_JWT)
+print(valid)
+
+now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+print(now)

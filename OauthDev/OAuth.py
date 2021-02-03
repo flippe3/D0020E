@@ -67,7 +67,7 @@ class OAuth:
 
 
         def do_POST(self):
-            super().do_GET()
+            super().do_POST()
             o = urlparse(self.path)
             query = parse_qs(o.query)
             if self.path.startswith("/token"):

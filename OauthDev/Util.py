@@ -1,10 +1,8 @@
 from datetime import datetime
-from datetime import timezone
 import jwt
-import development.Constants as c
 
 
-def getNow():
+def get_now():
     return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")  # <--- Visst ville vi använda utcnow() istället för now()?
 
 

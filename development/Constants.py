@@ -1,3 +1,4 @@
+from datetime import datetime
             #server stuff
 #------------------------------------#
 ip = "localhost"
@@ -84,38 +85,58 @@ LYat5TVDKjomcroxd+gKX9yT31eJc+FhjxHcByFQ8AjnlVA2tE35pyfO2YPv0V0p
 KwIDAQAB
 -----END PUBLIC KEY-----"""
 
-agent_mac_address = "00:0a:95:9d:68:16"
-agent_name = "Truck Device"
-message = "This PoA authorizes Agent (Truck device) to make decisions on behalf of the Principal and valid for a short period"
-principal_name = "Entrepreneur"
-valid_period = ["2021-01-01 12:00:00", "2021-12-30 12:00:00"]
-invalid_period = ["2020-01-01 12:00:00", "2020-12-30 12:00:00"]
-id = 3
+vendor_private_key = """-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAmVn08AULwdKSwqpWDRhPDbaR0xQNZYzphhZ59uK0ElGZcUr4
+ybFPEYeC5qxp/ntEuoU0cFlsCAWt/dG4R1yaaN2okWVydDQWNh5q6rVg9XjFCq3Q
+Rp4nQFlpgmxDbdRbN6CHbg2r0HBo2cl8IV4r7wpEOxYFQ6ZkwLaQ9Jwo05FZskmO
+MhFqPIpC96AMftV3/3Usu9IORB8nlNhRxylqea3HFKMBAJo5otSWQ3zvUXYcYPZO
+QqC5pu/GOSEuRa7g+uFX8DgJo4C0SaUwhBuPBr8rs9EbCHBxxT4TXpDUHzrJL0iY
+RJ7vJgPwrV8dvbh1Mek4m7bimnWug8bdh5xD1wIDAQABAoIBAQCW2GgZ2bzQ8aOv
+nQJ8axcINDiJW0Y6SDxFy8I5WpMrGd1IFilXrPRMF/JpmdvBmdvnZbRJd4zO71dR
+P4R3nd29nZx9OT82ky3uGkmtirFPhXa9pHAlptiRceJZislhNexscZoGZahGpuxc
+ntdds1agEoc/X8/Z1clxz6QTGbEHOoLX9KCg0u7sMwihPumQPnr8yAeCCxlNl/h+
+PWEleC3uucjtcgrzIbK0Wx/QmoE0woqxMZawc/JteFDNIkHPV/pNGB8nFsGhITHF
+DafkqXeFxNjKmIjXzwRliqLLOpvXfA067tTNc/vnzTopvo3ldR7AX75H9OVsupRh
+dUirtxshAoGBAM4ZXsYK4x5z2qGh9WXSXF9IrJ6KjMZPpcGVJQ436lt44dlNlvU5
+9o9kaiqpZF4+f+oPMxKm2mpjgtyRwgloXxbp0zcSmy2XwTywZioY120R40SYNENn
+BxWLAPepIP7XL2AwRSJ/9SolNb1qAN9CtqyWK1KAzoT3fbN0aXeiRgiPAoGBAL57
+IM1be1YKbG+nvilpxD2Ph3fb2aS3f0JovGhkWGua8Hrlpv8GKookLvLbsnBnJEuL
+dh1ldKMEEVqyaDXQjrFWoH5hQzSZ/zMUnT1CKPY0wp7gQ3SVE/MH/g/cC84gCk+w
+QDHiplE3D9epiIulhnsH/+NDVCKzAP+kev1zy+Q5AoGAPD6UQoWqMBuje/3QssvT
+7pJayxkq30km5bhIFajom4ZxVkjk6Jfh57ZthjzvttDEKVH6FuipDdI6zWjZ9FAL
+A7Kj6ARLUf97H9dcdc+/IQXKjiGDnXQ/UN/KD5rjpzqVgaN6ggQvUPuBgvW6fYiN
+x1M6JKq8M4f4uX082xiXKicCgYAF7SDFIt6Ae8yJ4Mcq1K6VV7zYPs/Trx3XfBi4
+ir6xgl2PBUwfzRpPt/Z5+dngY2UesJUZLwnk9IBxuPFDE10NKWvO4snLfisRdMe7
+my5ZEqUnekS/ANBhFFOUPL1lSVvoxMwKgUm5ZyQoCo9EAP9hHouYj4Szm6whSAXH
+ku26CQKBgQCM94l88H/x67BIkyog5Qgdyz3uXjiZqKl34wrBz5kQIt2sOFtw0ddR
+Cp+IIifcunANUesqNm+yPEiJr22hoSnzYgzyzdo7A53jedC8Qrr1ZT75pgr/op0x
+VXiWCBjq0W++ZLEuARU703TaBCMbKmIM6zv3OSvUyZDq8sLKjc4E9A==
+-----END RSA PRIVATE KEY-----"""
 
-valid_poa = {
-    "Agent_MAC_Address": agent_mac_address,
-    "Agent_Name": agent_name,
-    "Agent_Public_Key": agent_public_key,
-    "Message": message,
-    "Mining_Station_ID": "121",
-    "Principal_Name": principal_name,
-    "Prinicpal_Public_Key": principal_public_key,
-    "Valid_from": valid_period[0],
-    "Valid_to": valid_period[1],
-    "id": id
+vendor_public_key = """"-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmVn08AULwdKSwqpWDRhP
+DbaR0xQNZYzphhZ59uK0ElGZcUr4ybFPEYeC5qxp/ntEuoU0cFlsCAWt/dG4R1ya
+aN2okWVydDQWNh5q6rVg9XjFCq3QRp4nQFlpgmxDbdRbN6CHbg2r0HBo2cl8IV4r
+7wpEOxYFQ6ZkwLaQ9Jwo05FZskmOMhFqPIpC96AMftV3/3Usu9IORB8nlNhRxylq
+ea3HFKMBAJo5otSWQ3zvUXYcYPZOQqC5pu/GOSEuRa7g+uFX8DgJo4C0SaUwhBuP
+Br8rs9EbCHBxxT4TXpDUHzrJL0iYRJ7vJgPwrV8dvbh1Mek4m7bimnWug8bdh5xD
+1wIDAQAB
+-----END PUBLIC KEY-----"""
+
+agent_name = "Agent-1"
+principal_name = "Principal-1"
+iat = datetime(2021, 1, 1, 18, 0, 0).timestamp()
+exp = datetime(2021, 12, 30, 18, 0, 0).timestamp()
+
+valid_poa_payload = {
+    "agent_public_key": agent_public_key,           #required
+    "principal_public_key": principal_public_key,   #required
+    "resource_owner_id": vendor_public_key,         #required
+    "exp": exp,                                     #required
+    "iat": iat,                                         #optional
+    "metadata": {                                       #optional
+            "agent_name": agent_name,
+            "principal_name": principal_name
+    },
 }
 
-invalid_poa = {
-    "Agent_MAC_Address": agent_mac_address,
-    "Agent_Name": agent_name,
-    "Agent_Public_Key": agent_public_key,
-    "Message": message,
-    "Mining_Station_ID": "121",
-    "Principal_Name": principal_name,
-    "Prinicpal_Public_Key": principal_public_key,
-    "Valid_from": invalid_period[0],
-    "Valid_to": invalid_period[1],
-    "id": id
-}
-valid_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBZ2VudF9NQUNfQWRkcmVzcyI6IjAwOjBhOjk1OjlkOjY4OjE2IiwiQWdlbnRfTmFtZSI6IlRydWNrIGRldmljZSIsIkFnZW50X1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFubTRFb2IwV3pUUWF4bjJkTGJralxuVlFSUXB5cEp0ZGY3WEk0bHR1d2IzZmZQUVhxN2swcy9VTHBYR1ZwdzVtYkYzQXVHSUU1Kzc3SGlDQjVvN1FRSFxua1Y5YW5EanVFS09PR2Z4SlRJSS96em9jZVJlV09IV24rSnRURGxMdWN3dGZrNjFDeUpvRGFSNjd6VS9UVEJGV1xuTnNweW94L1JOTUNnT2NUSUFzZkxZaityTXNxNnpueVBpQjVLV29aSUM5aEEwMEVQVERnckRDRGJ1Yk1wZFZVbVxuNytERE1WcGZoeXVlUjk0VzN3eDB0RjFNTmFxc1R1V2tXWGNiZXYyZ3diNUU4VEJ5bUIwbENnTkIzUDZLUzhSUlxuTFlhdDVUVkRLam9tY3JveGQrZ0tYOXlUMzFlSmMrRmhqeEhjQnlGUThBam5sVkEydEUzNXB5Zk8yWVB2MFYwcFxuS3dJREFRQUJcbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIk1lc3NhZ2UiOiJUaGlzIFBvQSBhdXRob3JpemVzIEFnZW50IChUcnVjayBkZXZpY2UpIHRvIG1ha2UgZGVjaXNpb25zIG9uIGJlaGFsZiBvZiB0aGUgUHJpbmNpcGFsIGFuZCB2YWxpZCBmb3IgYSBzaG9ydCBwZXJpb2QiLCJNaW5pbmdfU3RhdGlvbl9JRCI6IjEyMSIsIlByaW5jaXBhbF9OYW1lIjoiRW50cmVwcmVuZXVyIiwiUHJpbmljcGFsX1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklUQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FRNEFNSUlCQ1FLQ0FRQm1vdGs5SlNiL1gveFpXWXRZdjFUaVxuenNudHdnMGJFc0pPVlhkdldDQS82dm1zbW9DVlM2VlFkZTFSWGRWNGkvRUFTc3NrNHFUelNQQ1p2VVoyK0NYU1xuM3ZldGkxOFdYanBGd28vR2pyUTgxbS9jM29sZThHaFExVWM3VWZnOTl1R3FiYUV1OVkvTUVRMVRlV0Myamp5N1xuVjNWR1NtZzlDdUdlRUNrNUNFT3IyM3FkQXZ3VUd3Y0pzeWZUaWRnd2pmUTVxU0NyYll3TlVTcy9SL1hOR3l5WFxueHU3bGw0QUs0N2lGWEcwdzExcEZnQVZuR0V3QXpybWVpK0pua05GaXNqbnJLYzliSTdNSWZRUVBUYVY4ZDBEbVxudWFRTVdaSzdhYWpWOVZNeDVhNUt3VGgrVkQzcEEvVVMzRkFkRlhoL2xjeFBmWHNyTXhmVmdPSGhwTWNkRThsL1xuQWdNQkFBRT1cbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIlZhbGlkX2Zyb20iOiIyMDIxLTAxLTAxIDEyOjAwOjAwIiwiVmFsaWRfdG8iOiIyMDIxLTEyLTMwIDEyOjAwOjAwIiwiaWQiOiIzIn0.QJaYenhoP3cLKNLy2FSsI9-FTjkzhPtnEOs9DxH2EznOH-tppZn9kBEkOOgtvw-IcWyoXZrr5gyDybTdneLzj2s6m7vVuiBv7eiFE-S1W1L2ObvQixFbkfNrH4cHXxxvf10zY7n5ZDUZyrbJiZPhoSGzXNuBJ_9DFe3o4wSDkEfJxPrUm5SJwamTv1SbzIE_KGkTwtdiTMK4-xnMkI0FmBGzTadzGF8pxJGFPK_oKKzrQDdNn9ZXIltgOP-W52rdPB0RjA8vuMjDj2_rTw8OTX-HQjPsYnmEOqLQjh7av0O56AoVatGrfWYarcLEZLbr5B2XsogfvSh6UeXvnlTGEw"
-invalid_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBZ2VudF9NQUNfQWRkcmVzcyI6IjAwOjBhOjk1OjlkOjY4OjE2IiwiQWdlbnRfTmFtZSI6IlRydWNrIGRldmljZSIsIkFnZW50X1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFubTRFb2IwV3pUUWF4bjJkTGJralxuVlFSUXB5cEp0ZGY3WEk0bHR1d2IzZmZQUVhxN2swcy9VTHBYR1ZwdzVtYkYzQXVHSUU1Kzc3SGlDQjVvN1FRSFxua1Y5YW5EanVFS09PR2Z4SlRJSS96em9jZVJlV09IV24rSnRURGxMdWN3dGZrNjFDeUpvRGFSNjd6VS9UVEJGV1xuTnNweW94L1JOTUNnT2NUSUFzZkxZaityTXNxNnpueVBpQjVLV29aSUM5aEEwMEVQVERnckRDRGJ1Yk1wZFZVbVxuNytERE1WcGZoeXVlUjk0VzN3eDB0RjFNTmFxc1R1V2tXWGNiZXYyZ3diNUU4VEJ5bUIwbENnTkIzUDZLUzhSUlxuTFlhdDVUVkRLam9tY3JveGQrZ0tYOXlUMzFlSmMrRmhqeEhjQnlGUThBam5sVkEydEUzNXB5Zk8yWVB2MFYwcFxuS3dJREFRQUJcbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIk1lc3NhZ2UiOiJUaGlzIFBvQSBhdXRob3JpemVzIEFnZW50IChUcnVjayBkZXZpY2UpIHRvIG1ha2UgZGVjaXNpb25zIG9uIGJlaGFsZiBvZiB0aGUgUHJpbmNpcGFsIGFuZCB2YWxpZCBmb3IgYSBzaG9ydCBwZXJpb2QiLCJNaW5pbmdfU3RhdGlvbl9JRCI6IjEyMSIsIlByaW5jaXBhbF9OYW1lIjoiRW50cmVwcmVuZXVyIiwiUHJpbmljcGFsX1B1YmxpY19LZXkiOiItLS0tLUJFR0lOIFBVQkxJQyBLRVktLS0tLVxuTUlJQklUQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FRNEFNSUlCQ1FLQ0FRQm1vdGs5SlNiL1gveFpXWXRZdjFUaVxuenNudHdnMGJFc0pPVlhkdldDQS82dm1zbW9DVlM2VlFkZTFSWGRWNGkvRUFTc3NrNHFUelNQQ1p2VVoyK0NYU1xuM3ZldGkxOFdYanBGd28vR2pyUTgxbS9jM29sZThHaFExVWM3VWZnOTl1R3FiYUV1OVkvTUVRMVRlV0Myamp5N1xuVjNWR1NtZzlDdUdlRUNrNUNFT3IyM3FkQXZ3VUd3Y0pzeWZUaWRnd2pmUTVxU0NyYll3TlVTcy9SL1hOR3l5WFxueHU3bGw0QUs0N2lGWEcwdzExcEZnQVZuR0V3QXpybWVpK0pua05GaXNqbnJLYzliSTdNSWZRUVBUYVY4ZDBEbVxudWFRTVdaSzdhYWpWOVZNeDVhNUt3VGgrVkQzcEEvVVMzRkFkRlhoL2xjeFBmWHNyTXhmVmdPSGhwTWNkRThsL1xuQWdNQkFBRT1cbi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLSIsIlZhbGlkX2Zyb20iOiIyMDIwLTAxLTAxIDEyOjAwOjAwIiwiVmFsaWRfdG8iOiIyMDIwLTEyLTMwIDEyOjAwOjAwIiwiaWQiOiIzIn0.GUnVFL-N4ssh3DUA4vdlrk135Jp14EZQBlfLjJBewm53bvUc0sfv4h6jQuPjYPGV9gxEPPRj-07JPgWCqTS6J8PDRdvetPs0Lc5_NOb65W5uNSvyIuEtMfNGr86UsoYSG8-aX_hAX4Qs3JvEk521qeTl6Gch6ma2KH4fU22MbOqukEvN1FEsgNeWGvC8hJPKaUBoO7TUpVXBNMKIjab5pcufGKvlZd5A6arHptadwcFWNUzEUKiAn1JtgYlseorPfej6HWPbAH9uWYlrWtMK3cFhpiwnqmg4p5DFkF8wozzCnUoFeO5as3hZ6g65AdhrxAuQJB2VJ6KgOrARs9o_Tw"

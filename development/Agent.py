@@ -1,8 +1,15 @@
+# This should probably be changed to a __init__.py
+# but easiest way for Filip to make it this work in the terminal. 
+import sys
+sys.path.append("..")
+
 import NetworkHandler as nh
-import Constants
+from OauthDev.OAuth import OAuth
+import Constants as CONSTS
 import random
-
-
+import requests
+import json
+'''
 class AgentServer(nh.Server):
 
     def do_GET(self):
@@ -14,39 +21,51 @@ class AgentServer(nh.Server):
         post_data = self.rfile.read(content_length)  # <--- Gets the data itself
         nc = nh.NetworkHandler()
         nc.requests_get(Constants.vendor_port,"UsePoa","",data=post_data)
-        #nc.send_msg("PoA", post_data, Constants.vendor_port)
-
-
+'''
 class Agent:
     poa_store = []
+    ids = []
+    auths = []
 
-    def __init__(self):
-        random.seed = 1
-        self.agent_id = random.randint(0, 999)
-        self.public_key = random.randint(999, 999999)
+    # Retries the ID that oauth assigns to it and stores it.
+    def discovery(self):
+        msg = requests.get("http://localhost:81/discovery").content.decode("utf-8")
+        print("cid: ", msg)
+        self.ids.append(msg)
 
+    
+    # For now authorize takes the latests id and tries to authorize, should be generalized in the future.
+    def authorize(self):
+        msg = requests.get("http://localhost:81/authorize",
+                 params={'response_type': 'code', 'client_id': self.ids[-1], 'state': OAuth().generate_state()})
 
-    def request_poa(self):
-        request = str(self.agent_id) + ',' + str(self.public_key)
-        PoA =nh.NetworkHandler().requests_get(Constants.principal_port, "poaRequest", request)
-        print("AGENT : PoA request sent")
-        self.poa_store.append(PoA)
-        self.transmit_to_vendor()
+        self.auths.append(msg)
+        print("Response: ", msg)
 
+    # Also only uses most recent id which won't generalize.
+    def retrieve_poa(self):
+        # We should probably rewrite this bjson thingy to something better but this works for now.
+        bjson = dict(self.auths[-1].json())
+        poa = requests.post("http://localhost:81/token",
+                            params={'grant_type': 'authorization_code', 'client_id': self.ids[-1], 'code': bjson.get("code")}).content.decode("utf-8")
+        self.poa_store.append(poa)
+        print("Agent recieved POA")
+        print("POA:", poa)
 
-    # WONT RUN DUE TO SERVER IMPLEMENTATION
-    def receive_poa(self, data):
-        self.poa_store.append(data)
-        self.transmit_to_vendor()
 
     def transmit_to_vendor(self):
-        print("Transmitting PoA")
-        nh.NetworkHandler().requests_post(Constants.vendor_port, "usePoA",
-                                          self.poa_store[len(self.poa_store) - 1])
-
+        print("Starting transmission from Agent to Vendor")
+        nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA",
+                                         self.poa_store[-1])
+        '''
     def setup_server(self):
+        print("Waiting for vendor verification.")        
         nw = nh.NetworkHandler()
-        nw.setup_server(Constants.agent_port, AgentServer)
-
+        nw.setup_server(Constants.agent_port, AgentServer)        
+        '''
+# This should probably be moved to a test file instead.
 a = Agent()
-a.request_poa()
+a.discovery()
+a.authorize()
+a.retrieve_poa()
+a.transmit_to_vendor()

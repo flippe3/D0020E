@@ -5,6 +5,8 @@ import time
 from urllib.parse import parse_qs, urlparse
 
 import development.NetworkHandler as networkHandler
+from OauthDev.Poa import Poa as POA 
+from development import Constants as CONSTS
 
 #This file handles ServerSide Oauth authentication, to use it first send a get request to '/discovery' to get a userId
 # as a responce . This gives you the required information to request a authenficaion token by GET requesting '/authorize'
@@ -126,6 +128,7 @@ class OAuth:
 
             print(session.state)
             print(session.clientID)
+            
             code = session.generate_code()
             resJson = {"state": session.state, "code": code}
             encoded =json.JSONEncoder().encode(resJson)
@@ -158,16 +161,25 @@ class OAuth:
                 print("wrong grant type")
                 print(query.get("grant_type")[0])
 
-        #this is a simple example for how a token could be sent out, Will be Replaced by the PoA itself
         def token_response(self, query):
+            print("generating POA webtoken, using a pre-set expiry and preset metadata")
+
+            # This generates the PoA, should be updated with real metadata in the future.
+            poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
+                      resource_owner_id=CONSTS.vendor_public_key, exp=CONSTS.exp,
+                      metadata="Agent ID:" + query.get("client_id")[0] + ", Principal name: xx, ...")
+
+            poa_webtoken = poa.generate_poa_web_token(private_key=CONSTS.principal_private_key)            
+            print("poa generation successful")
+
+            # Sends the PoA to the Agent.
             self.send_response(200)
-            self.send_header("Content-type", "application/json")
+            self.send_header("Content-type", "application/jwt")
             self.end_headers()
-            token = Token(query.get("client_id")[0])
-            tokens.append(token)
-            self.wfile.write(bytes(token.toJson(), "utf-8"))
+            tokens.append(poa_webtoken)
+            self.wfile.write(bytes(poa_webtoken, "utf-8"))
 
-
+'''
 #Simple Accsess token example
 class Token:
     def __init__(self, host):
@@ -191,3 +203,4 @@ class Token:
                 'expires_in': self.expires_in,
                 'refresh_token': self.refresh_token}
         return json.JSONEncoder().encode(js)
+'''

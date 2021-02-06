@@ -19,7 +19,7 @@ cd D0020E
 python -m pip install -r requirements.txt
   ```
 # Demo
-[Early PoA demo](https://i.imgur.com/nCyyo16.mp4)
+[Early PoA demo](https://drive.google.com/file/d/1h7ZIZRRX2PNYf7U505KncbeTq6vk3mtU/view?usp=sharing)
 # Current flow
 ```
 OAUTH: Agent->Principal (Requests the PoA)

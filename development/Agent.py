@@ -9,19 +9,7 @@ import Constants as CONSTS
 import random
 import requests
 import json
-'''
-class AgentServer(nh.Server):
 
-    def do_GET(self):
-        super(AgentServer, self).do_GET()
-
-    def do_POST(self):
-        super(AgentServer, self).do_POST()
-        content_length = int(self.headers['Content-Length'])  # <--- Gets the size of data
-        post_data = self.rfile.read(content_length)  # <--- Gets the data itself
-        nc = nh.NetworkHandler()
-        nc.requests_get(Constants.vendor_port,"UsePoa","",data=post_data)
-'''
 class Agent:
     poa_store = []
     ids = []
@@ -57,12 +45,7 @@ class Agent:
         print("Starting transmission from Agent to Vendor")
         nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA",
                                          self.poa_store[-1])
-        '''
-    def setup_server(self):
-        print("Waiting for vendor verification.")        
-        nw = nh.NetworkHandler()
-        nw.setup_server(Constants.agent_port, AgentServer)        
-        '''
+
 # This should probably be moved to a test file instead.
 a = Agent()
 a.discovery()

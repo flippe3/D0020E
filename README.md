@@ -18,3 +18,15 @@ cd D0020E
 ```sh
 python -m pip install -r requirements.txt
   ```
+# Current flow
+```
+OAUTH: Agent->Principal (Requests the PoA)
+OAUTH: Agent<-Principal (Sends back the signed PoA)
+NETWORKHANDLER: Agent->Vendor (Hands over the PoA)
+```
+
+# TODO
+* Make the vendor send a message back saying the PoA verified.
+* Generalizations
+  * Multiple PoAs
+  * Letting the Agent input more data to the PoA metadata

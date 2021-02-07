@@ -36,7 +36,7 @@ class Poa:
                 "agent_public_key": self.agent_public_key,
                 "principal_public_key": self.principal_public_key,
                 "resource_owner_id": self.resource_owner_id,
-                "iat": datetime.now().timestamp(),
+                "iat": datetime.utcnow().timestamp(),
                 "exp": self.exp
             }
         if self.metadata is None:

@@ -7,7 +7,7 @@ import jwt, json, OauthDev.PublicKey as pc
 import NetworkHandler as nh
 import OauthDev.Util as Util
 import Constants as CONSTS
-from Verifier import Verifier
+#from Verifier import Verifier
 
 #data_string = '{ "poa" :"' + Constants.valid_token + '"}'
 
@@ -30,24 +30,65 @@ class VendorServer(nh.Server):
             decoded_poa = Util.decode_jwt(poa, public_key=CONSTS.principal_public_key)
             print("Successfully decoded PoA:", decoded_poa)
         except:
-            print("Vendor failed to decode the PoA")
+            print("Vendor failed to decode the PoA") # This will happen if poa is expired btw
 
 
         print("Vendor verifying PoA")
-        try:
-            verifier = Verifier()
-            if verifier.verify_poa(decoded_poa):
-                pass
-                # PoA is verified successfully.
-                # Here a message should be sent to the Agent show that the PoA verified.
-        except:
-            #print("Vendor unsuccessfully verified the PoA. (Verifier needs to be updated)")
+        
 
-            # REMOVE ABOVE COMMENT WHEN VERFIER WORKS (and remove the code beneath), this is just for demo.
+        if (Verifier().verify_poa(decoded_poa)):
             print("PoA verfied.")
-            #self.wfile.write(bytes("POA USE GRANTED", "utf-8"))
             
+            # PoA is verified successfully.
+            # Here a message should be sent to the Agent show that the PoA verified.
+        else:
+            print("Vendor unsuccessfully verified the PoA.")
+
+    
+        # REMOVE ABOVE COMMENT WHEN VERFIER WORKS (and remove the code beneath), this is just for demo.
+        
+        #self.wfile.write(bytes("POA USE GRANTED", "utf-8"))
+
+
+import datetime  # Only used to check 'exp', but 'exp' is already checked during the decoding so 
+import Register  # Behövs inte än. Ska fixa register
+class Verifier:
+
+    def verify_poa(self, payload):
+        try:
+            agent_public_key        = payload["agent_public_key"]
+            principal_public_key    = payload["principal_public_key"]
+            resource_owner_id       = payload["resource_owner_id"]
+            exp                     = payload["exp"]    
+
+            return Verifier.verify_payload(self, agent_public_key, principal_public_key, resource_owner_id, exp)      
             
+        except KeyError:
+            print("Payload is missing mandatory data")
+            return False
+    
+    
+    def verify_payload(self, agent_public_key, principal_public_key, resource_owner_id, exp):
+
+        # Check keys
+        if(agent_public_key     != CONSTS.agent_public_key):
+                print("Incorrect agent_public_key")
+                return False
+        if(principal_public_key != CONSTS.principal_public_key):
+                print("Incorrect principal_public_key")
+                return False
+        if(resource_owner_id    != CONSTS.vendor_public_key):
+                print("Incorrect vendor_public_key")
+                return False
+
+        if(exp < datetime.datetime.utcnow().timestamp()):   # This is automatically checked when POA gets decoded 
+                print("POA has expired")
+                return False
+
+        return True
+
+
+
 class Vendor:
 
     def setup_server(self):
@@ -55,3 +96,6 @@ class Vendor:
         nh.NetworkHandler().setup_server(CONSTS.vendor_port, VendorServer)
 
 Vendor().setup_server()
+
+
+

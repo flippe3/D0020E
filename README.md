@@ -28,7 +28,6 @@ NETWORKHANDLER: Agent->Vendor (Hands over the PoA)
 ```
 
 # TODO
-* Implement verification on the Vendor side.
 * Make the vendor send a message back saying the PoA verified.
 * Generalizations
   * Multiple PoAs

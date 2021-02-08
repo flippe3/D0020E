@@ -38,7 +38,7 @@ class VendorServer(nh.Server):
 
         if (Verifier().verify_poa(decoded_poa)):
             print("PoA verfied.")
-            
+            self.wfile.write("PoA Verified".encode("utf-8"))
             # PoA is verified successfully.
             # Here a message should be sent to the Agent show that the PoA verified.
         else:

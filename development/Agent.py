@@ -43,8 +43,9 @@ class Agent:
 
     def transmit_to_vendor(self):
         print("Starting transmission from Agent to Vendor")
-        nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA",
-                                         self.poa_store[-1])
+        print(nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA",
+                                         self.poa_store[-1]))
+
 
 # This should probably be moved to a test file instead.
 a = Agent()

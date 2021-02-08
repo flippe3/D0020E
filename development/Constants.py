@@ -2,7 +2,7 @@ from datetime import datetime
             #server stuff
 #------------------------------------#
 ip = "localhost"
-agent_port = 4573
+agent_port = 4575
 principal_port = 4573
 vendor_port = 4574
 

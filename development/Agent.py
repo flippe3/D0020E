@@ -5,6 +5,7 @@ sys.path.append("..")
 
 import NetworkHandler as nh
 from OauthDev.OAuth import OAuth
+from OauthDev.Util import input_form
 import Constants as CONSTS
 import random
 import requests
@@ -35,7 +36,7 @@ class Agent:
         # We should probably rewrite this bjson thingy to something better but this works for now.
         bjson = dict(self.auths[-1].json())
         poa = requests.post("http://localhost:81/token",
-                            params={'grant_type': 'authorization_code', 'client_id': self.ids[-1], 'code': bjson.get("code")}).content.decode("utf-8")
+                            params={'grant_type': 'authorization_code', 'client_id': self.ids[-1], 'code': bjson.get("code"), 'metadata': input_form()}).content.decode("utf-8")
         self.poa_store.append(poa)
         print("Agent recieved POA")
         print("POA:", poa)

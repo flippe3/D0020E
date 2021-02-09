@@ -1,5 +1,6 @@
 from datetime import datetime
 import jwt
+import json
 
 UTC = True
 LOCAL = False
@@ -33,3 +34,17 @@ def verify_poa_expiration(poa_payload):
         return True
     else:
         return False
+
+def input_form():
+    print("This is a form to input the metadata for the PoA.")
+    name = input("Full name: ")
+    app = input("Application type: ")
+    principal_name = input("Principal name: ")
+    mac = input("MAC ID: ")
+    # Choose between all principals/vendors
+    metadata = {"Agent Name": name,
+                "Application Type": app,
+                "Principal Name": principal_name,
+                "MAC Address": mac
+                }
+    return json.JSONEncoder().encode(metadata)

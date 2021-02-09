@@ -70,7 +70,8 @@ class VendorServer(nh.Server):
             print("Successfully decoded PoA:", decoded_poa)
         except:
             print("Vendor failed to decode the PoA") # This will happen if poa is expired btw
-            self.wfile.write("PoA NOT DECODED And theirfor can not be used".encode("utf-8"))
+            self.wfile.write("PoA NOT DECODED And therefore can not be used".encode("utf-8"))
+            return
 
 
         print("Vendor verifying PoA")

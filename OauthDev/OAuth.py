@@ -162,7 +162,7 @@ class OAuth:
                 print(query.get("grant_type")[0])
 
         def token_response(self, query):
-            print("generating POA webtoken, using a pre-set expiry and preset metadata")
+            print("generating POA webtoken")
             # This generates the PoA, should be updated with real metadata in the future.
             metadata = json.loads(query.get("metadata")[0])
             poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,

@@ -15,7 +15,8 @@ class Agent:
     poa_store = []
     ids = []
     auths = []
-
+    def __init__(self, user_id):
+        self.user_id = user_id
     # Retries the ID that oauth assigns to it and stores it.
     def discovery(self):
         msg = requests.get("http://localhost:81/discovery").content.decode("utf-8")
@@ -35,8 +36,9 @@ class Agent:
     def retrieve_poa(self):
         # We should probably rewrite this bjson thingy to something better but this works for now.
         bjson = dict(self.auths[-1].json())
-        poa = requests.post("http://localhost:81/token",
+        r = requests.post("http://localhost:81/token",
                             params={'grant_type': 'authorization_code', 'client_id': self.ids[-1], 'code': bjson.get("code"), 'metadata': input_form()}).content.decode("utf-8")
+        poa = r.split('\n')[-1]
         self.poa_store.append(poa)
         print("Agent recieved POA")
         print("POA:", poa)
@@ -44,12 +46,14 @@ class Agent:
 
     def transmit_to_vendor(self):
         print("Starting transmission from Agent to Vendor")
-        print(nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA",
-                                         self.poa_store[-1]))
-
+        print(self.poa_store[-1])
+        ##print(nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA", {'poa': self.poa_store[-1], 'agent_id': self.user_id, 'principal_id': 2}))
+        poa = requests.post("http://localhost:4574", params={'poa': self.poa_store[-1], 'agent_id': self.user_id, 'principal_id': 2}).content.decode("utf-8")
+        #print(nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA",
+        #                                        self.poa_store[-1]))
 
 # This should probably be moved to a test file instead.
-a = Agent()
+a = Agent(2)
 a.discovery()
 a.authorize()
 a.retrieve_poa()

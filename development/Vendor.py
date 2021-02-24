@@ -1,12 +1,15 @@
 # This should probably be changed to a __init__.py
 # but easiest way for Filip to make it this work in the terminal. 
 import sys
+
 sys.path.append("..")
 
 import NetworkHandler as nh
 import OauthDev.Util as Util
 import Constants as CONSTS
 import OauthDev.PublicKey as pb
+import json
+from urllib.parse import parse_qs, urlparse
 
 class Verifier:
 
@@ -29,18 +32,14 @@ class VendorServer(nh.Server):
 
     def do_POST(self):
         super(VendorServer, self).do_POST()
-        content_length = int(self.headers['Content-Length'])  # <--- Gets the size of data
-        post_data = self.rfile.read(content_length)  # <--- Gets the data itself
-
-        # splits the header data and the payload and returns the poa.
-        poa = post_data.decode("utf-8").split('\n')[-1]
-        print("Vendor received POA")
-        print("Vendor decoding POA")
+        o = urlparse(self.path)
+        payload = parse_qs(o.query)
+        poa = payload.get("poa")[0]
         try:
             decoded_poa = Util.decode_jwt(poa, public_key=CONSTS.principal_public_key)
             print("Successfully decoded PoA:", decoded_poa)
         except:
-            print("Vendor failed to decode the PoA") # This will happen if poa is expired btw
+            print("Vendor failed to decode the PoA")  # This will happen if poa is expired btw
             self.wfile.write("PoA NOT DECODED And therefore can not be used".encode("utf-8"))
             return
         print("Vendor verifying PoA")
@@ -53,13 +52,12 @@ class VendorServer(nh.Server):
             print("Vendor unsuccessfully verified the PoA.")
             self.wfile.write("PoA Use NOT ALLOWED".encode("utf-8"))
 
+
 class Vendor:
 
     def setup_server(self):
         print("Vendor server starting")
         nh.NetworkHandler().setup_server(CONSTS.vendor_port, VendorServer)
 
+
 Vendor().setup_server()
-
-
-

@@ -1,12 +1,13 @@
 import binascii
 import json
 import os
-import time
+#import time
 from urllib.parse import parse_qs, urlparse
 
 import development.NetworkHandler as networkHandler
 from OauthDev.Poa import Poa as POA 
 from development import Constants as CONSTS
+from datetime import datetime
 
 #This file handles ServerSide Oauth authentication, to use it first send a get request to '/discovery' to get a userId
 # as a responce . This gives you the required information to request a authenficaion token by GET requesting '/authorize'
@@ -62,7 +63,7 @@ class OAuth:
 
         #generates the code used for the 'Code' parameter in Oauth authentification
         def generate_code(self):
-            self.expire = time.time() + 10 * 1000 * 60 #10 minutes
+            self.expire = datetime.utcnow().timestamp() + 10 * 1000 * 60    # 10 minutes
             code = binascii.b2a_base64(os.urandom(128)).decode('ascii').replace('=\n', '')
             print("code: " + code)
             self.code = code
@@ -70,7 +71,7 @@ class OAuth:
 
         #Verifys that a token request contains a valid key
         def verify_valid_code(self, code):
-            return self.expire > time.time() and code == self.code
+            return self.expire > datetime.utcnow().timestamp() and code == self.code
 
     #This is a Http Server configured for responding to Oauth requests
     class OAuthServer(networkHandler.Server):

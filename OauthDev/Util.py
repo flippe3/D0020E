@@ -7,8 +7,7 @@ LOCAL = False
 
 def get_current_date(utc=False):
     if utc:
-        return datetime.utcnow().strftime(
-            "%Y-%m-%d %H:%M:%S")  # <--- Visst ville vi använda utcnow() istället för now()?
+        return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     else:
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 

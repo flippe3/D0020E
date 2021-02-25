@@ -1,6 +1,6 @@
 RewriteEngine On    # Turn on the rewriting engine
  
-RewriteRule ^getPk/([0-9a-zA-Z_-]*)$ getPk.php?PK=$1 [NC,L]
-RewriteRule ^getUserId/([0-9a-zA-Z_-]*)$ getUserId.php?ID=$1 [NC,L]
+RewriteRule ^getPk/([0-9a-zA-Z_-]*)$ getPk.php?ID=$1 [NC,L]
+RewriteRule ^getUserId/([0-9a-zA-Z_-]*)$ getUserId.php?PK=$1 [NC,L]
 RewriteRule ^verifyUserId/([0-9a-zA-Z_-]*)$ verifyUserId.php?ID=$1 [NC,L]
 RewriteRule ^verifyPk/([0-9a-zA-Z_-]*)$ verifyPk.php?PK=$1 [NC,L]

@@ -7,7 +7,7 @@ sys.path.append("..")
 import NetworkHandler as nh
 import OauthDev.Util as Util
 import Constants as CONSTS
-import OauthDev.PublicKey as pb
+import OauthDev.KeyRegHandler as pb
 import json
 from urllib.parse import parse_qs, urlparse
 

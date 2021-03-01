@@ -148,6 +148,13 @@ class OAuth:
 
         #this validates the code sent out in authorize
         def token(self, query):
+
+            content_length = int(self.headers.get('content-length', 0))  # <--- Gets the size of data
+            post_data = self.rfile.read(content_length)  # <--- Gets the data itself
+            data = post_data.decode('utf-8')
+            query = parse_qs(data)
+
+
             if query.get("grant_type")[0] == "authorization_code":
                 cid = query.get("client_id")[0]
                 if cid is None:
@@ -174,10 +181,11 @@ class OAuth:
             print("poa generation successful")
 
             # Sends the PoA to the Agent.
-            self.send_response(200)
-            self.send_header("Content-type", "application/jwt")
-            self.end_headers()
+            #self.send_response(200)
+            #self.send_header("Content-type", "application/jwt")
+            #self.end_headers()
             tokens.append(poa_webtoken)
+
             self.wfile.write(bytes(poa_webtoken, "utf-8"))
 
 '''

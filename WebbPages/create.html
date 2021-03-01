@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PoA Creator</title>
+</head>
+<script>
+    var i = 0;
+    function addField(){
+        document.getElementById("extras").innerHTML += "<lable for='extra"+i+"'>Extra "+i+"</lable><br>" +
+            "<input type='text' id='extra"+(i++)+"' name='extra'><br>"
+
+    }
+</script>
+<body>
+<form action="CreatePoa" method="post">
+    <label for="ip">Ip:</label><br>
+    <input type="text" id="ip" name="ip"><br>
+    <label for="port">Port:</label><br>
+    <input type="number" id="port" name="port"><br>
+
+    <label for="name">Agent name:</label><br>
+    <input type="text" id="name" name="name"><br>
+
+    <label for="appType">Application type:</label><br>
+    <input type="text" id="appType" name="appType"><br>
+
+    <label for="pname">Principal name:</label><br>
+    <input type="text" id="pname" name="pname"><br>
+
+    <label for="macid">MAC ID:</label><br>
+    <input type="text" id="macid" name="macid"><br>
+
+    <label for="sDate">Start Date</label><br>
+    <input type="datetime-local" id="sDate" name="sDate"><br>
+
+    <label for="stopDate">Stop Date</label><br>
+    <input type="datetime-local" id="stopDate" name="stopDate"><br>
+    <div id="extras"></div>
+
+    <label for="file">Json File:</label><br>
+    <input type="file" id="file" name="file"><br>
+
+    <input type="submit" value="Create">
+
+</form>
+<button onclick="addField()" >Add Extras</button>
+</body>
+</html>

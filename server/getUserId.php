@@ -1,30 +1,31 @@
 <?php
- if (isset($_GET['PK']) && $_GET['PK']!="") {
+$json = file_get_contents('php://input');
+$data = json_decode($json);
+$search_val = $data->search_value;
+
+
+if (isset($search_val) && $search_val != "") {
  $link = mysqli_connect("localhost", "root", "hackerman", "keyregistry");
- $pk = $_GET['PK'];
+ $pk = $search_val;
  $request = "SELECT * FROM users WHERE PublicKey='$pk'";
- #echo $request, "<br>";
  $result = mysqli_query($link, $request);
  if(mysqli_num_rows($result)>0)
  {
  $row = mysqli_fetch_assoc($result);
  $id = $row['ID'];
  $name = $row['Name'];
- response($id, $pk, $name, NULL, NULL);
+
+ header("HTTP/1.1 200 OK");
+ echo $id;
+ 
  mysqli_close($link);
  } else {
-   echo "No record found<br>";
-   response($id, $pk, NULL, 200,"No Record Found");
- }
+   header("HTTP/1.1 200 OK");
+   echo "No record found";
+}
 } else{
-     response(NULL, NULL, NULL, 400,"Invalid Request");  
+   header("HTTP/1.1 400 Bad Request");
+   echo "Invalid request";
 }
 
-function response($id,$pk,$name, $code, $msg){
- $response['ID'] = $id;
- $response['PublicKey'] = $pk;
- $response['Name'] = $name; 
- $json_response = json_encode($response);
- echo $json_response;
-}
 ?>

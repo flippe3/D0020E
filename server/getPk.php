@@ -14,27 +14,17 @@ if (isset($search_val) && $search_val != "") {
  $row = mysqli_fetch_assoc($result);
  $pk = $row['PublicKey'];
  $name = $row['Name'];
- response($id, $pk, $name, NULL, NULL);
+ echo $pk;
+ header("HTTP/1.1 200 OK");
  mysqli_close($link);
  }
  else {
-   echo "No record found<br>";
-   response($id, NULL, NULL, 200,"No Record Found");
+   header("HTTP/1.1 200 OK");
+   echo "No record found";
 }
 }
 else{
+   header("HTTP/1.1 400 Bad Request");
    echo "Invalid request";
-   #response($id, NULL, NULL, 400,"Invalid Request");
-}
-
-function response($id,$pk,$name, $code, $msg){
- $response['ID'] = $id;
- $response['PublicKey'] = $pk;
- $response['Name'] = $name; 
- $json_response = json_encode($response);
- #echo $json_response;
- if ($code == NULL){
-    echo $pk;
- }
 }
 ?>

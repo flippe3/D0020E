@@ -1,29 +1,25 @@
 <?php
-if (isset($_GET['PK']) && $_GET['PK']!="") {
- $link = mysqli_connect("localhost", "root", "hackerman", "keyregistry");
+$json = file_get_contents('php://input');
+$data = json_decode($json);
+$search_val = $data->search_value;
 
- $pk = $_GET['PK'];
+if (isset($search_val) && $search_val!="") {
+ $link = mysqli_connect("localhost", "root", "hackerman", "keyregistry");
+ $pk = $search_val;
  $request = "SELECT * FROM users WHERE PublicKey='$pk'";
  $result = mysqli_query($link, $request);
 
  if(mysqli_num_rows($result)>0)
  {
- response($pk, 200, "Verified Public Key");
+ header("HTTP/1.1 200 OK");
+ echo "True";
  mysqli_close($link);
  }else {
-  response($pk, 200, "Unverified Public Key");       
+    header("HTTP/1.1 200 OK");
+    echo "False";
  }}
  else{
-   response($pk, 400,"Invalid request");
+   header("HTTP/1.1 400 Bad Request");
+   echo "Invalid request";
 }
-
-
-function response($pk, $code, $msg){
- $response['PK'] = $pk;
- $response['code'] = $code;
- $response['msg'] = $msg;
- $json_response = json_encode($response);
- echo $json_response;
-}
-
 ?>

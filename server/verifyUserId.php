@@ -1,26 +1,25 @@
 <?php
-if (isset($_GET['ID']) && $_GET['ID']!="") {
+$json = file_get_contents('php://input');
+$data = json_decode($json);
+$search_val = $data->search_value;
+
+if (isset($search_val) && $search_val!="") {
  $link = mysqli_connect("localhost", "root", "hackerman", "keyregistry");
- $id = $_GET['ID'];
+ $id = $search_val;
  $request = "SELECT * FROM users WHERE ID='$id'";
  $result = mysqli_query($link, $request);
+
  if(mysqli_num_rows($result)>0)
  {
- response($id, 200, "Verified ID");
+ header("HTTP/1.1 200 OK");
+ echo "True";
  mysqli_close($link);
  }else{
-  response($id, 200, "Unverified ID"); 
+    header("HTTP/1.1 200 OK");
+    echo "False";
  }
  }else{
-   response($id, 400,"Invalid request");
+   header("HTTP/1.1 400 Bad Request");
+   echo "Invalid request";
 }
-
-function response($id, $code, $msg){
- $response['ID'] = $id;
- $response['code'] = $code;
- $response['msg'] = $msg;
- $json_response = json_encode($response);
- echo $json_response;
-}
-
 ?>

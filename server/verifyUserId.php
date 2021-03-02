@@ -21,7 +21,7 @@
 		
 	}
 	else{
-			header("HTTP/1.1 400 Bad Request");
-			echo "Invalid request";
+		header("HTTP/1.1 400 Bad Request");
+		echo "Invalid request";
 	}
 ?>

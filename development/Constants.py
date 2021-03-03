@@ -35,7 +35,7 @@ MzS5Svtm6/9f4q35k+21wjqZRPjWy3XgT0DJqyhvcG70ZWjaakADrH01/uusX6PY
 X2ECgYATxWgJRw59MUE00hg6aN67mI6bA1BcwKCjcehrZARBcMJZ6cEABc89sL/u
 57IQ/Axj6rqeEimTR7aiTnls9GxRZtDb+/x4VhggQVP/Z0HsyhlolRcyP6PsO9mx
 jSBD5u6fBvc/HZg/Lok2JbAnV2POK/9H0RiOMTOkXdoyJg+BTg==
------END RSA PRIVATE KEY-----"""
+-----END RSA PRIVATE KEY-----""".replace('\n', '\r\n')
 
 principal_public_key = """-----BEGIN PUBLIC KEY-----
 MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBmotk9JSb/X/xZWYtYv1Ti
@@ -45,7 +45,7 @@ V3VGSmg9CuGeECk5CEOr23qdAvwUGwcJsyfTidgwjfQ5qSCrbYwNUSs/R/XNGyyX
 xu7ll4AK47iFXG0w11pFgAVnGEwAzrmei+JnkNFisjnrKc9bI7MIfQQPTaV8d0Dm
 uaQMWZK7aajV9VMx5a5KwTh+VD3pA/US3FAdFXh/lcxPfXsrMxfVgOHhpMcdE8l/
 AgMBAAE=
------END PUBLIC KEY-----"""
+-----END PUBLIC KEY-----""".replace('\n', '\r\n')
 
 agent_private_key = """-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAnm4Eob0WzTQaxn2dLbkjVQRQpypJtdf7XI4ltuwb3ffPQXq7
@@ -73,7 +73,7 @@ CyweFN1Fj31ziebhHTyAT2A212wsocxxGwteru14lFZJ9wzHDuHbosQj9vZgPmrg
 fClP8QKBgCIIsomgmIlfT9iYEiaH0lhsjuFpUaCfC4kVjbI3UlnnUzPMVdfgOrVr
 ZaDQDuvIE2wGlVYBjFROXD4YHKh2kT8dtdvmGq3UIWWkdoS8RLFcMvg2PIA+Y2vP
 Ou9tPaEl9vCHa+mwYt2fvdB4UVhskeSDufuuOw7ZD8DS01/zfdHY
------END RSA PRIVATE KEY-----"""
+-----END RSA PRIVATE KEY-----""".replace('\n', '\r\n')
 
 agent_public_key = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnm4Eob0WzTQaxn2dLbkj
@@ -83,7 +83,7 @@ Nspyox/RNMCgOcTIAsfLYj+rMsq6znyPiB5KWoZIC9hA00EPTDgrDCDbubMpdVUm
 7+DDMVpfhyueR94W3wx0tF1MNaqsTuWkWXcbev2gwb5E8TBymB0lCgNB3P6KS8RR
 LYat5TVDKjomcroxd+gKX9yT31eJc+FhjxHcByFQ8AjnlVA2tE35pyfO2YPv0V0p
 KwIDAQAB
------END PUBLIC KEY-----"""
+-----END PUBLIC KEY-----""".replace('\n', '\r\n')
 
 vendor_private_key = """-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAmVn08AULwdKSwqpWDRhPDbaR0xQNZYzphhZ59uK0ElGZcUr4
@@ -111,7 +111,7 @@ my5ZEqUnekS/ANBhFFOUPL1lSVvoxMwKgUm5ZyQoCo9EAP9hHouYj4Szm6whSAXH
 ku26CQKBgQCM94l88H/x67BIkyog5Qgdyz3uXjiZqKl34wrBz5kQIt2sOFtw0ddR
 Cp+IIifcunANUesqNm+yPEiJr22hoSnzYgzyzdo7A53jedC8Qrr1ZT75pgr/op0x
 VXiWCBjq0W++ZLEuARU703TaBCMbKmIM6zv3OSvUyZDq8sLKjc4E9A==
------END RSA PRIVATE KEY-----"""
+-----END RSA PRIVATE KEY-----""".replace('\n', '\r\n')
 
 vendor_public_key = """"-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmVn08AULwdKSwqpWDRhP
@@ -121,7 +121,7 @@ aN2okWVydDQWNh5q6rVg9XjFCq3QRp4nQFlpgmxDbdRbN6CHbg2r0HBo2cl8IV4r
 ea3HFKMBAJo5otSWQ3zvUXYcYPZOQqC5pu/GOSEuRa7g+uFX8DgJo4C0SaUwhBuP
 Br8rs9EbCHBxxT4TXpDUHzrJL0iYRJ7vJgPwrV8dvbh1Mek4m7bimnWug8bdh5xD
 1wIDAQAB
------END PUBLIC KEY-----"""
+-----END PUBLIC KEY-----""".replace('\n', '\r\n')
 
 agent_name = "Agent-1"
 principal_name = "Principal-1"

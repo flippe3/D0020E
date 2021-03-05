@@ -3,12 +3,13 @@ from datetime import datetime
 
 
 class Poa:
-    def __init__(self, agent_public_key=None, principal_public_key=None, resource_owner_id=None, exp=None, metadata=None):
+    def __init__(self, agent_public_key=None, principal_public_key=None, resource_owner_id=None, exp=None, metadata=None, iat=datetime.utcnow().timestamp()):
         self.agent_public_key = agent_public_key
         self.principal_public_key = principal_public_key
         self.resource_owner_id = resource_owner_id
         self.exp = exp
         self.metadata = metadata
+        self.iat = iat
 
     def set_metadata_value(self, metadata_key, value):
         self.metadata = {
@@ -31,12 +32,15 @@ class Poa:
     def set_expiration_date(self, expiration_date):
         self.exp = expiration_date
 
+    def set_start_date(self, start_date):
+        self.iat = start_date
+
     def generate_payload(self):
         payload = {
                 "agent_public_key": self.agent_public_key,
                 "principal_public_key": self.principal_public_key,
                 "resource_owner_id": self.resource_owner_id,
-                "iat": datetime.utcnow().timestamp(),
+                "iat": self.iat,
                 "exp": self.exp
             }
         if self.metadata is None:

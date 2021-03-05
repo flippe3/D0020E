@@ -15,11 +15,11 @@ import random
 import requests
 import json
 
-
 poa_store = []
 
+
 class Connection:
-    def __init__(self, ip,port):
+    def __init__(self, ip, port):
         self.ip = ip
         self.port = port
 
@@ -31,20 +31,18 @@ class Connection:
 
 
 class AgentGui:
-
-
     ids = []
     auths = []
 
     # Retries the ID that oauth assigns to it and stores it.
-    def discovery(self):
-        msg = requests.get("http://localhost:81/discovery").content.decode("utf-8")
+    def discovery(self, ip="localhost", port="81"):
+        msg = requests.get("http://" + ip + ":" + port + "/discovery").content.decode("utf-8")
         print("cid: ", msg)
         self.ids.append(msg)
 
     # For now authorize takes the latests id and tries to authorize, should be generalized in the future.
-    def authorize(self):
-        msg = requests.get("http://localhost:81/authorize",
+    def authorize(self, ip="localhost", port="81"):
+        msg = requests.get("http://" + ip + ":" + port + "/authorize",
                            params={'response_type': 'code', 'client_id': self.ids[-1],
                                    'state': OAuth().generate_state()})
 
@@ -52,12 +50,12 @@ class AgentGui:
         print("Response: ", msg)
 
     # Also only uses most recent id which won't generalize.
-    def retrieve_poa(self, data):
+    def retrieve_poa(self, data, ip="localhost", port="81"):
         # We should probably rewrite this bjson thingy to something better but this works for now.
         bjson = dict(self.auths[-1].json())
-        responce = requests.post("http://localhost:81/token",
-                            data={'grant_type': 'authorization_code', 'client_id': self.ids[-1],
-                                    'code': bjson.get("code"), 'metadata': data})
+        responce = requests.post("http://" + ip + ":" + port + "/token",
+                                 data={'grant_type': 'authorization_code', 'client_id': self.ids[-1],
+                                       'code': bjson.get("code"), 'metadata': data})
         poa = responce.content.decode("utf-8")
         poa_store.append(poa)
         print("Agent recieved POA")
@@ -68,11 +66,8 @@ class AgentGui:
         print(nh.NetworkHandler().requests_post(CONSTS.vendor_port, "usePoA",
                                                 poa_store[-1]))
 
+
 class WebbHostServer(nh.Server):
-
-
-
-
 
     def do_GET(self):
         super(WebbHostServer, self).do_GET()
@@ -90,9 +85,8 @@ class WebbHostServer(nh.Server):
         if self.path == "/project.html":
             self.wfile.write(WebbPageScripts.project(poa_store).encode("utf-8"))
 
-
     def do_POST(self):
-       # super(WebbHostServer, self).do_POST()
+        # super(WebbHostServer, self).do_POST()
         print(self.path)
 
         if self.path.endswith(".html"):
@@ -103,35 +97,46 @@ class WebbHostServer(nh.Server):
             post_data = str(self.rfile.read(content_length))  # <--- Gets the data itself
 
             a = post_data.split("&")
-            metadata = {"Agent Name": a[3].split("=")[1],
-                        "Application Type": a[4].split("=")[1],
-                        "Principal Name": a[5].split("=")[1],
-                        "MAC Address": a[6].split("=")[1]
+            metadata = {"Agent Name": a[2].split("=")[1],
+                        "Application Type": a[3].split("=")[1],
+                        "Principal Name": a[4].split("=")[1],
+                        "MAC Address": a[5].split("=")[1]
                         }
-            enc = json.JSONEncoder().encode(metadata)
-            #metadata.setdefault()
+            print(len(a))
+            if len(a) > 9:
+                for items in range(8, len(a), 2):
+                    metadata.setdefault(a[items].split("=")[1], a[items + 1].split("=")[1])
+
+            payload = {"exp": a[6].split("=")[1],
+                       "iat": a[7].split("=")[1],
+                       "meta": metadata
+                       }
+
+            enc = json.JSONEncoder().encode(payload)
+            # metadata.setdefault()
             agent = AgentGui()
+            ip = str(a[0].split("=")[1])
+            port = str(a[1].split("=")[1])
 
-            agent.discovery()
-            agent.authorize()
-            agent.retrieve_poa(enc)
+            agent.discovery(ip, port)
+            agent.authorize(ip, port)
+            agent.retrieve_poa(enc, ip, port)
 
-       #     data = post_data.decode('utf-8')
-            #print(data)
+            #     data = post_data.decode('utf-8')
+            # print(data)
             self.send_response(307)
-            self.send_header("Location","/project.html")
+            self.send_header("Location", "/project.html")
 
-            #self.headers.get("Host") +
+            # self.headers.get("Host") +
             self.end_headers()
         else:
             print("ERROR: Fel")
 
 
-
 nh.NetworkHandler().setup_server(82, WebbHostServer)
 # This should probably be moved to a test file instead.
-#a = AgentGui()
-#a.discovery()
-#a.authorize()
-#a.retrieve_poa()
-#a.transmit_to_vendor()
+# a = AgentGui()
+# a.discovery()
+# a.authorize()
+# a.retrieve_poa()
+# a.transmit_to_vendor()

@@ -8,8 +8,12 @@
 	<script>
 		var i = 0;
 		function addField(){
-			document.getElementById("extras").innerHTML += "<lable for='extra" + i + "'>Extra " + i +"</lable>" +
-				"<br><input type='text' id='extra" + (i++) + "' name='extra'><br>";
+			if(i == 0){
+				document.getElementById("extras").innerHTML += "<pre className='tab'>		Key:			Value:</pre>"
+			}
+
+			document.getElementById("extras").innerHTML += "Extra " + i +": <input type=text' id='ExtraKey' "+ i +"name='ExtraValue' ></input>" +
+				"<input type='text' id='ExtraValue" + (i++) + "' name='ExtraValue'><br>";
 		}
 	</script>
 	
@@ -18,9 +22,9 @@
 <body>
 	<form action="CreatePoa" method="post">
 		<label for="ip">Ip:</label><br>
-		<input type="text" id="ip" name="ip"><br>
+		<input type="text" id="ip" name="ip" value="localhost"><br>
 		<label for="port">Port:</label><br>
-		<input type="number" id="port" name="port"><br>
+		<input type="number" id="port" name="port" value="81"><br>
 
 		<label for="name">Agent name:</label><br>
 		<input type="text" id="name" name="name"><br>
@@ -39,12 +43,14 @@
 
 		<label for="stopDate">Stop Date</label><br>
 		<input type="datetime-local" id="stopDate" name="stopDate"><br>
+
 		<div id="extras"></div>
 
 		<label for="file">Json File:</label><br>
 		<input type="file" id="file" name="file"><br>
 
 		<input type="submit" value="Create">
+
 
 	</form>
 	<button onclick="addField()" >Add Extras</button>

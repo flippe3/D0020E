@@ -43,17 +43,15 @@ class Poa:
                 "iat": self.iat,
                 "exp": self.exp
             }
-        if self.metadata is None:
-            return payload
-        else:
+        if self.metadata is not None:
             payload["metadata"] = self.metadata
-            return payload
+            
+        return payload
 
     def generate_poa_web_token(self, private_key, payload=None):
         if payload is None:
             payload = self.generate_payload()
-        else:
-            payload = payload
+
         return jwt.encode(payload, private_key, algorithm="RS256")
 
 

@@ -22,15 +22,16 @@ class Verifier:
             return Verifier.verify_keys(self, payload["agent_public_key"], payload["principal_public_key"])
         except KeyError:
             print("Payload is missing mandatory data")
-            return False
+        return False
 
     def verify_keys(self, agent_public_key, principal_public_key):
         # Check keys
         a = self.kr.verify_public_key(principal_public_key)
-        b = self.kr.verify_public_key(agent_public_key)
         print("Vefifying one key ", a)
+        b = self.kr.verify_public_key(agent_public_key)
         print("Verifying second key", b)
         return a and b
+
 
 
 class VendorServer(nh.Server):
@@ -40,38 +41,44 @@ class VendorServer(nh.Server):
         self.verifier = Verifier
         self.kr = KeyRegHandler
 
+
     def set_keyreg_and_verifier(self, kr: KeyRegHandler):
         self.kr = kr
         self.verifier = Verifier(kr)
 
+
     def do_GET(self):
         super(VendorServer, self).do_GET()
 
+
     def do_POST(self):
         super(VendorServer, self).do_POST()
+        
         o = urlparse(self.path)
         payload = parse_qs(o.query)
         print("PAYLOAD \n", payload)
-        poa = payload.get("poa")[0]
-        agent_id = payload.get("agent_id")[0]
+
+        poa          = payload.get("poa")[0]
+        agent_id     = payload.get("agent_id")[0]
         principal_id = payload.get("principal_id")[0]
+
         try:
-            decoded_poa = Util.decode_jwt(poa, public_key=self.kr.get_public_key(id_of_actor=principal_id))
-            # decoded_poa = Util.decode_jwt(poa, public_key=CONSTS.princ_test)
+            decoded_poa = Util.decode_jwt( poa, public_key=self.kr.get_public_key( id_of_actor = principal_id))
             print("Successfully decoded PoA:\n", decoded_poa)
+
         except:
-            print("Vendor failed to decode the PoA")  # This will happen if poa is expired btw
+            print("Vendor failed to decode the PoA")  # This will happen if poa is expired
             self.wfile.write("PoA NOT DECODED And therefore can not be used".encode("utf-8"))
             return
+
         print("Vendor verifying PoA")
         if self.verifier.verify_poa(decoded_poa):
             print("PoA Verified And Used.")
             self.wfile.write("PoA Use Granted And Verified for use".encode("utf-8"))
-            # PoA is verified successfully.
-            # Here a message should be sent to the Agent show that the PoA verified.
         else:
             print("Vendor unsuccessfully verified the PoA.")
             self.wfile.write("PoA Use NOT ALLOWED".encode("utf-8"))
+
 
 
 class Vendor:

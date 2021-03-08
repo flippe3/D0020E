@@ -2,7 +2,7 @@ import jwt
 import json
 
 
-def project(poas):
+def project(poas, agentID, princId):
     script = "<script>" \
              "\nconsole.log(document.getElementById('Items').innerHTML);"
 
@@ -19,7 +19,7 @@ def project(poas):
         #    a.get("metadata")) + " Iat:" + a.get('iat') + " Exp: " + a.get('exp') + \
         #          "</a> <button onClick=\"clipboard"+str(d)+"()\">Copy To clipbord</button>"
         script+=  "\ndocument.getElementById(\'Items\').innerHTML += \'<div>\'"
-        script+=  "\ndocument.getElementById(\'Items\').innerHTML += \'<a>" + json.dumps(a.get("metadata")) + " Iat:" + a.get('iat') + " Exp: " + a.get('exp') +"</a>\'"
+        script+=  "\ndocument.getElementById(\'Items\').innerHTML += \'<a>" + json.dumps(a.get("metadata")) + " Iat:" + a.get('iat') + " Exp: " + a.get('exp') + "  AgentID: "+str(agentID) + "  Principal ID: "+str(princId)+"</a>\'"
         script+=  "\ndocument.getElementById(\'Items\').innerHTML += \' <textarea hidden id=\"a"+str(d)+"\">"+ poa +"</textarea>\'"
         script+=  "\ndocument.getElementById(\'Items\').innerHTML += \'<button onClick=\"clipboard"+str(d)+"()\">Copy To clipbord</button>\'"
         d= d+1

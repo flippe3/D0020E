@@ -16,7 +16,8 @@ import requests
 import json
 
 poa_store = []
-
+agentID = 0
+agentIDs = []
 
 class Connection:
     def __init__(self, ip, port):
@@ -33,6 +34,10 @@ class Connection:
 class AgentGui:
     ids = []
     auths = []
+
+    def __init__(self, agentIDt, princid):
+        self.agentID = agentIDt
+        self.princID = princid
 
     # Retries the ID that oauth assigns to it and stores it.
     def discovery(self, ip="localhost", port="81"):
@@ -55,9 +60,12 @@ class AgentGui:
         bjson = dict(self.auths[-1].json())
         responce = requests.post("http://" + ip + ":" + port + "/token",
                                  data={'grant_type': 'authorization_code', 'client_id': self.ids[-1],
+                                       "agentID": self.agentID,
                                        'code': bjson.get("code"), 'metadata': data})
         poa = responce.content.decode("utf-8")
         poa_store.append(poa)
+        if(len(agentIDs) == 0):
+            agentIDs.append(self.agentID)
         print("Agent recieved POA")
         print("POA:", poa)
 
@@ -83,7 +91,7 @@ class WebbHostServer(nh.Server):
         self.end_headers()
         self.wfile.write(f.read().encode("utf-8"))
         if self.path == "/project.html":
-            self.wfile.write(WebbPageScripts.project(poa_store).encode("utf-8"))
+            self.wfile.write(WebbPageScripts.project(poa_store, agentIDs[0], 1).encode("utf-8"))
 
     def do_POST(self):
         # super(WebbHostServer, self).do_POST()
@@ -97,24 +105,25 @@ class WebbHostServer(nh.Server):
             post_data = str(self.rfile.read(content_length))  # <--- Gets the data itself
 
             a = post_data.split("&")
-            metadata = {"Agent Name": a[2].split("=")[1],
-                        "Application Type": a[3].split("=")[1],
-                        "Principal Name": a[4].split("=")[1],
-                        "MAC Address": a[5].split("=")[1]
+            metadata = {"Agent Name": a[3].split("=")[1],
+                        "Application Type": a[4].split("=")[1],
+                        "Principal Name": a[5].split("=")[1],
+                        "MAC Address": a[6].split("=")[1]
                         }
             print(len(a))
-            if len(a) > 9:
-                for items in range(8, len(a), 2):
+            if len(a) > 10:
+                for items in range(9, len(a), 2):
                     metadata.setdefault(a[items].split("=")[1], a[items + 1].split("=")[1])
 
-            payload = {"exp": a[6].split("=")[1],
-                       "iat": a[7].split("=")[1],
-                       "meta": metadata
+            payload = {"exp": a[7].split("=")[1],
+                       "iat": a[8].split("=")[1],
+                       "meta": metadata,
+                       "agentID": a[2].split("=")[1]
                        }
 
             enc = json.JSONEncoder().encode(payload)
             # metadata.setdefault()
-            agent = AgentGui()
+            agent = AgentGui(a[2].split("=")[1], 1)
             ip = str(a[0].split("=")[1])
             port = str(a[1].split("=")[1])
 

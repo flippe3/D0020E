@@ -173,9 +173,13 @@ class OAuth:
             print("generating POA webtoken")
             # This generates the PoA, should be updated with real metadata in the future.
             metadata = json.loads(query.get("metadata")[0])
-            poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
-                      resource_owner_id=CONSTS.vendor_public_key, exp=metadata["exp"], iat=metadata["iat"],
-                      metadata=metadata["meta"])
+            if(metadata.__contains__("exp")):
+                poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
+                          resource_owner_id=CONSTS.vendor_public_key, exp=metadata["exp"], iat=metadata["iat"],
+                          metadata=metadata["meta"])
+            else: poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
+                          resource_owner_id=CONSTS.vendor_public_key, metadata= metadata)
+
 
             poa_webtoken = poa.generate_poa_web_token(private_key=CONSTS.principal_private_key)            
             print("poa generation successful")

@@ -44,13 +44,13 @@ class AccessServer(nh.Server):
         elif self.path =="/access":
             content_length = int(self.headers.get('content-length', 0))  # <--- Gets the size of data
             post_data = str(self.rfile.read(content_length).decode('utf-8'))  # <--- Gets the data itself
-            print(post_data)
             data = post_data.split("&")
-            print(type(data))
+            
             poa = data[0].split('=')[1]
             agent_id = data[1].split('=')[1]
             principal_id = data[2].split('=')[1]
             print(poa, agent_id, principal_id)
+
             send = requests.post("http://localhost:4574", params={'poa': poa, 'agent_id': agent_id, 'principal_id': principal_id}).content.decode("utf-8")
 
             print(send)

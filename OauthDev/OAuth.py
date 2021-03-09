@@ -175,7 +175,7 @@ class OAuth:
             metadata = json.loads(query.get("metadata")[0])
             if(metadata.__contains__("exp")):
                 poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
-                          resource_owner_id=CONSTS.vendor_public_key, exp=metadata["exp"], iat=metadata["iat"],
+                          resource_owner_id=CONSTS.vendor_public_key, exp=metadata["exp"], nbf=metadata["iat"],
                           metadata=metadata["meta"])
             else: poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
                           resource_owner_id=CONSTS.vendor_public_key, metadata= metadata)
@@ -192,28 +192,4 @@ class OAuth:
 
             self.wfile.write(bytes(poa_webtoken, "utf-8"))
 
-'''
-#Simple Accsess token example
-class Token:
-    def __init__(self, host):
-        oauth = OAuth()
-        self.host = host
-        self.access_token = oauth.generate_state()
-        self.token_type = ""
-        # 1 year expiry
-        # dont use
-        self.expires_in = 1000 * 60 * 60 * 365
-        self.expiry_time = time.time() + self.expires_in
-        self.refresh_token = oauth.generate_state()
-        # self.example_parameter = ""
 
-    def still_valid(self):
-        pass
-
-    def toJson(self):
-        js = {'access_token': self.access_token,
-                'token_type': self.token_type,
-                'expires_in': self.expires_in,
-                'refresh_token': self.refresh_token}
-        return json.JSONEncoder().encode(js)
-'''

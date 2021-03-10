@@ -22,7 +22,7 @@ def project(poas, agentID, princId):
         #          "</a> <button onClick=\"clipboard"+str(d)+"()\">Copy To clipbord</button>"
         script+=  "\ndocument.getElementById(\'Items\').innerHTML += \'<div>\'"
         script+=  "\ndocument.getElementById(\'Items\').innerHTML += \'<a>" + json.dumps(a.get("metadata")) + " Iat:" + datetime.datetime.fromtimestamp( a.get('iat') ).strftime("%Y-%m-%d-%H:%M") + " UTC TIME Exp: " + a.get('exp') + "  AgentID: "+str(agentID) + "  Principal ID: "+str(pid)+"</a>\'"
-        script+=  "\ndocument.getElementById(\'Items\').innerHTML += \' <textarea hidden id=\"a"+str(d)+"\">"+ poa +"</textarea>\'"
+        script+=  "\ndocument.getElementById(\'Items\').innerHTML += \' <textarea id=\"a"+str(d)+"\">"+ poc["poa"] +"</textarea>\'"
         script+=  "\ndocument.getElementById(\'Items\').innerHTML += \'<button onClick=\"clipboard"+str(d)+"()\">Copy To clipbord</button>\'"
         d= d+1
     script += "\n</script>"

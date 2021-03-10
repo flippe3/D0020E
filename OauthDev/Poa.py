@@ -3,14 +3,18 @@ from datetime import datetime
 
 
 class Poa:
-    def __init__(self, agent_public_key=None, principal_public_key=None, resource_owner_id=None, exp=None, metadata=None, iat=datetime.utcnow().timestamp()-36000, nbf = None):
+    def __init__(self, agent_public_key=None, principal_public_key=None, resource_owner_id=None, exp=None, metadata=None, iat=datetime.utcnow().timestamp(), nbf = None):
         self.agent_public_key = agent_public_key
         self.principal_public_key = principal_public_key
         self.resource_owner_id = resource_owner_id
         self.exp = exp
         self.metadata = metadata
         self.iat = iat
-        self.nbf = nbf
+        if nbf < iat:
+            self.nbf = iat
+        else:
+            self.nbf = nbf
+
 
     def set_metadata_value(self, metadata_key, value):
         self.metadata = {
@@ -42,7 +46,8 @@ class Poa:
                 "principal_public_key": self.principal_public_key,
                 "resource_owner_id": self.resource_owner_id,
                 "iat": self.iat,
-                "exp": self.exp
+                "exp": self.exp,
+                "nbf": self.nbf
             }
         if self.metadata is not None:
             payload["metadata"] = self.metadata

@@ -3,11 +3,11 @@ from datetime import datetime
 
 
 class Poa:
-    def __init__(self, agent_public_key=None, principal_public_key=None, resource_owner_id=None, exp=None, metadata=None, iat=datetime.utcnow().timestamp()-36000, nbf = None):
+    def __init__(self, agent_public_key=None, principal_public_key=None, resource_owner_id=None, exp=datetime.utcnow().timestamp()+360000, metadata=None, iat=datetime.utcnow().timestamp()-36000, nbf = None):
         self.agent_public_key = agent_public_key
         self.principal_public_key = principal_public_key
         self.resource_owner_id = resource_owner_id
-        self.exp = exp
+        self.exp = datetime.utcnow().timestamp()+360000
         self.metadata = metadata
         self.iat = iat
         self.nbf = nbf

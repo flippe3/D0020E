@@ -64,6 +64,7 @@ class VendorServer(nh.Server):
 
         try:
             decoded_poa = Util.decode_jwt( poa, public_key=self.kr.get_public_key( id_of_actor = principal_id))
+            #decoded_poa = Util.decode_jwt( poa, public_key=CONSTS.principal_public_key)
             print("Successfully decoded PoA:\n", decoded_poa)
 
         except:

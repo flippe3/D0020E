@@ -3,9 +3,10 @@
 import sys
 from urllib.parse import parse_qs, urlparse
 
+sys.path.append("..")
+
 from WebbPages import WebbPageScripts
 
-sys.path.append("..")
 
 import NetworkHandler as nh
 from OauthDev.OAuth import OAuth
@@ -85,7 +86,7 @@ class WebbHostServer(nh.Server):
 
     def HtmlPage(self):
         print(self.path)
-        f = open("WebbPages/" + self.path[1:], "r")
+        f = open("../WebbPages/" + self.path[1:], "r")
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()

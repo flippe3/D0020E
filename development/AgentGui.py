@@ -11,6 +11,7 @@ from WebbPages import WebbPageScripts
 import NetworkHandler as nh
 from OauthDev.OAuth import OAuth
 from OauthDev.Util import input_form
+from datetime import datetime
 import Constants as CONSTS
 import random
 import requests
@@ -115,8 +116,10 @@ class WebbHostServer(nh.Server):
                 for items in range(9, len(a), 2):
                     metadata.setdefault(a[items].split("=")[1], a[items + 1].split("=")[1])
 
-            payload = {"exp": a[7].split("=")[1],
-                       "iat": a[8].split("=")[1],
+            payload = {#"exp": a[7].split("=")[1],
+                       #"iat": a[8].split("=")[1],
+                       "exp": datetime.utcnow().timestamp()+36000,
+                       "iat": datetime.utcnow().timestamp()-36000,
                        "meta": metadata,
                        "agentID": a[2].split("=")[1]
                        }

@@ -180,16 +180,17 @@ class OAuth:
             else: poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
                           resource_owner_id=CONSTS.vendor_public_key, metadata= metadata)
 
-
-            poa_webtoken = poa.generate_poa_web_token(private_key=CONSTS.principal_private_key)            
+            poa_webtoken = poa.generate_poa_web_token(private_key=CONSTS.principal_private_key)
+            webt = {"poa": poa_webtoken, "pid": CONSTS.principal_id}
             print("poa generation successful")
 
             # Sends the PoA to the Agent.
             #self.send_response(200)
             #self.send_header("Content-type", "application/jwt")
             #self.end_headers()
-            tokens.append(poa_webtoken)
+            send = json.JSONEncoder().encode(webt).encode("utf-8")
+            tokens.append(webt)
 
-            self.wfile.write(bytes(poa_webtoken, "utf-8"))
+            self.wfile.write(send)
 
 

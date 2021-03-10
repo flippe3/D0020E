@@ -91,7 +91,7 @@ class WebbHostServer(nh.Server):
         self.end_headers()
         self.wfile.write(f.read().encode("utf-8"))
         if self.path == "/project.html":
-            self.wfile.write(WebbPageScripts.project(poa_store, agentIDs[0], 1).encode("utf-8"))
+            self.wfile.write(WebbPageScripts.project(poa_store, agentIDs[0], -23).encode("utf-8"))
 
     def do_POST(self):
         # super(WebbHostServer, self).do_POST()
@@ -103,7 +103,6 @@ class WebbHostServer(nh.Server):
         elif self.path == "/CreatePoa":
             content_length = int(self.headers.get('content-length', 0))  # <--- Gets the size of data
             post_data = str(self.rfile.read(content_length))  # <--- Gets the data itself
-
             a = post_data.split("&")
             metadata = {"Agent Name": a[3].split("=")[1],
                         "Application Type": a[4].split("=")[1],

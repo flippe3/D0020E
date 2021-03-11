@@ -28,7 +28,4 @@ NETWORKHANDLER: Agent->Vendor (Hands over the PoA)
 ```
 
 # TODO
-* Make the vendor send a message back saying the PoA verified.
-* Generalizations
-  * Multiple PoAs
-  * Letting the Agent input more data to the PoA metadata
+* Challenge Response

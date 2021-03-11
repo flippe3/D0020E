@@ -173,13 +173,28 @@ class OAuth:
             print("generating POA webtoken")
             # This generates the PoA, should be updated with real metadata in the future.
             metadata = json.loads(query.get("metadata")[0])
-            if(metadata.__contains__("exp")):
+
+            if(metadata.__contains__("meta")):
                 poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
-                          resource_owner_id=CONSTS.vendor_public_key, exp=metadata["exp"], nbf=metadata["iat"],
-                          metadata=metadata["meta"])
+                          resource_owner_id=CONSTS.vendor_public_key, metadata=metadata["meta"])
             else: poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
                           resource_owner_id=CONSTS.vendor_public_key, metadata= metadata)
 
+
+            if (metadata.__contains__("exp")):
+                poa.exp = metadata["exp"]
+                print("Added exp")
+            if(metadata.__contains__("nbf")):
+                poa.nbf = metadata["nbf"]
+                print("Added nfb")
+
+           # if(metadata.__contains__("exp")):
+           #     poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
+           #               resource_owner_id=CONSTS.vendor_public_key, exp=metadata["exp"], nbf=metadata["iat"],
+           #               metadata=metadata["meta"])
+           # else: poa = POA(agent_public_key=CONSTS.agent_public_key, principal_public_key=CONSTS.principal_public_key,
+           #               resource_owner_id=CONSTS.vendor_public_key, metadata= metadata)
+#
             poa_webtoken = poa.generate_poa_web_token(private_key=CONSTS.principal_private_key)
             webt = {"poa": poa_webtoken, "pid": CONSTS.principal_id}
             print("poa generation successful")

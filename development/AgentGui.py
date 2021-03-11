@@ -118,8 +118,10 @@ class WebbHostServer(nh.Server):
 
             payload = {#"exp": a[7].split("=")[1],
                        #"iat": a[8].split("=")[1],
-                       "exp": datetime.utcnow().timestamp()+36000,
-                       "iat": datetime.utcnow().timestamp()-36000,
+                       #"exp": datetime.utcnow().timestamp()+36000,
+                       #"iat": datetime.utcnow().timestamp()-36000,
+                       "nbf" : datetime.fromisoformat(a[7].split("=")[1].replace("%3A",":")).timestamp(),
+                       "exp" : datetime.fromisoformat(a[8].split("=")[1].replace("%3A",":")).timestamp(),
                        "meta": metadata,
                        "agentID": a[2].split("=")[1]
                        }

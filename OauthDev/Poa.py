@@ -14,6 +14,7 @@ class Poa:
             self.nbf = iat
         else:
             self.nbf = nbf
+
     def set_metadata_value(self, metadata_key, value):
         self.metadata = {
             metadata_key: value
@@ -44,7 +45,8 @@ class Poa:
                 "principal_public_key": self.principal_public_key,
                 "resource_owner_id": self.resource_owner_id,
                 "iat": self.iat,
-                "exp": self.exp
+                "exp": self.exp,
+                "nbf": self.nbf
             }
         if self.metadata is not None:
             payload["metadata"] = self.metadata

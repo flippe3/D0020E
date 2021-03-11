@@ -56,7 +56,7 @@ class AccessServer(nh.Server):
             print(send)
             if send == "PoA Use Granted And Verified for use":
                 self.send_response(307)
-                self.send_header("Location", "/top-secret.pdf")
+                self.send_header("Location", "/success.html")
                 self.end_headers()
             else:
                 self.send_response(307)

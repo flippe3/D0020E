@@ -41,4 +41,21 @@ The implementation to create and use PoAs' is currently in it's most barebones s
 * The agent could verify the Resource-owner/Vendor is the correct one
 
 ### Agent classes
-In our project currently we have two classes for running the agent, the standard class and one for the web ui.
+In our project currently we have two classes for running the agent, the standard class and one for the web ui. This became the first hurdle when we wanted to further develop our system. Some of the developers were not able to run the web ui version and could not therefore implement things for it, so if we wanted to implement the challenge response for example it would have to be done in both files and considering small differences in them it could be more work than just copy-pasting.
+#### Challenge response in the agent
+Regarding the challenge response if it were to be implemented one way to do it is by omitting/modifying the discovery process which starts the communication flow. Instead of asking for a discovery and getting the id (note that this id is just an id to keep track of the active communications) you could instead request a challenge. When the challenge is received the agent gives the response and with that the principal will respond if the agent got approved or not. If the agent succeeded the challenge the principal could provide the id in that response thus removing the actual discovery check. A flow could look something like this.
+```
+Agent -> (Challenge request)  -> Principal 
+Agent <-    (Challenge)       <- Principal
+Agent -> (Challenge response) -> Principal
+                                    |
+                        Denied  |Verifies|
+Agent <-  (Response) ---------- |response|
+                                   |
+                                   | Accepted
+Agent <- (Response + ID)  <------- |
+  |
+ Continues with 
+ requesting poa
+
+```

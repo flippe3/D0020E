@@ -19,6 +19,9 @@ cd D0020E
 python -m pip install -r requirements.txt
   ```
 3. Start the services. 
+  ```
+cd development
+  ```
 ```
 sudo python Principal.py
   ```
@@ -28,14 +31,11 @@ sudo python AgentGui.py
   ```
 sudo python AccessPage.py
   ```
-  4. Create PoA.
   ```
-Go to http://localhost:81/create.html
+python Vendor.py
   ```
-  5. Use PoA.
-  ```
-Go to http://localhost:83/access.html
-  ```
+  4. Create PoA. Go to http://localhost:81/create.html
+  5. Use PoA. Go to http://localhost:83/access.html
 # Demo
 [Early PoA demo](https://drive.google.com/file/d/1h7ZIZRRX2PNYf7U505KncbeTq6vk3mtU/view?usp=sharing)
 

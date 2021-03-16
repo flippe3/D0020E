@@ -19,10 +19,9 @@ cd D0020E
 python -m pip install -r requirements.txt
   ```
 4. Setup database. 
-```
 Setup a mysql database by importing the localhost.sql file in something like phpmyadmin. (https://www.inmotionhosting.com/support/server/databases/import-database-using-phpmyadmin/)
 Then edit the development/Vendor.py file with your ip and port.
-```
+
 5. Start the services. 
   ```
 cd development

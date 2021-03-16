@@ -18,7 +18,12 @@ cd D0020E
 ```sh
 python -m pip install -r requirements.txt
   ```
-3. Start the services. 
+4. Setup database. 
+```
+Setup a mysql database by importing the localhost.sql file in something like phpmyadmin. (https://www.inmotionhosting.com/support/server/databases/import-database-using-phpmyadmin/)
+Then edit the development/Vendor.py file with your ip and port.
+```
+5. Start the services. 
   ```
 cd development
   ```
@@ -34,8 +39,8 @@ sudo python AccessPage.py
   ```
 python Vendor.py
   ```
-  4. Create PoA. Go to http://localhost:81/create.html
-  5. Use PoA. Go to http://localhost:83/access.html
+  6. Create PoA. Go to http://localhost:81/create.html
+  7. Use PoA. Go to http://localhost:83/access.html
 # Demo
 [Early PoA demo](https://drive.google.com/file/d/1h7ZIZRRX2PNYf7U505KncbeTq6vk3mtU/view?usp=sharing)
 
